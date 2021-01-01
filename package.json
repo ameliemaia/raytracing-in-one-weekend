@@ -1,0 +1,118 @@
+{
+  "name": "webgl-react-app",
+  "version": "0.2.0",
+  "description": "Jam3's WebGL React App Boilerplate",
+  "keywords": [
+    "webgl",
+    "threejs",
+    "best practices",
+    "create react app"
+  ],
+  "private": true,
+  "author": {
+    "name": "Amelie Maia Rosser",
+    "email": "amelierosser1986@gmail.com",
+    "url": "http://ixviii.io/"
+  },
+  "contributors": [
+    {
+      "name": "Iran Reyes",
+      "email": "iran.reyes@jam3.com"
+    },
+    {
+      "name": "Peter Altamirano",
+      "email": "peter.altamirano@jam3.com"
+    }
+  ],
+  "homepage": "https://jam3.github.io/webgl-react-app/",
+  "bugs": {
+    "url": "https://github.com/Jam3/webgl-react-app/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jam3/webgl-react-app.git"
+  },
+  "license": "MIT",
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "npm run linters && react-scripts build",
+    "deploy": "env-cmd -f .env.gh-pages npm run build && gh-pages -d build",
+    "eject": "react-scripts eject",
+    "audit": "audit-ci --high",
+    "js-lint": "eslint './src/**/*.js' -c ./.eslintrc.json --quiet --ignore-pattern .gitignore",
+    "flow": "flow",
+    "flow-typed": "flow-typed install",
+    "linters": "npm-run-all flow js-lint",
+    "assets": "node scripts/assets/optimise",
+    "postinstall": "npm run flow-typed"
+  },
+  "engines": {
+    "node": ">=13.7.0",
+    "npm": ">=6.13.6"
+  },
+  "dependencies": {
+    "@jam3/detect": "^1.0.2",
+    "@jam3/stats": "^1.0.1",
+    "dat.gui": "^0.7.7",
+    "detect-gpu": "^1.2.0",
+    "env-cmd": "^10.1.0",
+    "eventemitter3": "^4.0.0",
+    "file-saver": "^2.0.2",
+    "gsap": "^3.2.6",
+    "gsap-promisify": "^1.0.2",
+    "query-string": "^6.12.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-scripts": "3.4.0",
+    "three": "^0.113.2"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^8.3.5",
+    "audit-ci": "^2.5.1",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-config-react-jam3": "^1.1.0",
+    "eslint-plugin-jam3": "^0.2.3",
+    "eslint-plugin-prettier": "^3.1.3",
+    "eslint-plugin-promise": "^4.2.1",
+    "fbx2gltf": "^0.9.7-p1",
+    "file-extension": "^4.0.5",
+    "file-name": "^0.1.0",
+    "flow-bin": "^0.118.0",
+    "flow-typed": "^3.1.0",
+    "gh-pages": "^2.2.0",
+    "husky": "^4.2.5",
+    "image-size": "^0.8.3",
+    "lint-staged": "^10.1.7",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^1.19.1",
+    "sharp": "^0.24.1",
+    "shelljs": "^0.8.3"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "lint-staged": {
+    "src/**/*.js": [
+      "prettier --write"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "echo 'Pre-commit checks...' && npm run linters && lint-staged",
+      "pre-push": "echo 'Pre-push checks...' && npm run linters && npm run audit",
+      "commitmsg": "commitlint -e $GIT_PARAMS"
+    }
+  }
+}

@@ -1,1 +1,1 @@
-# raytracing-in-one-weekend
+# Raytracing in one weekend
