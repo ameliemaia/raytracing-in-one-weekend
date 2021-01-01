@@ -98,7 +98,7 @@ class WebGLApp extends EventEmitter {
   }
 
   captureScreenshot = () => {
-    this.screenshot.capture(this.currentScene.scene, this.currentScene.camera);
+    this.screenshot.capture(this.currentScene, this.currentScene.camera);
   };
 
   /**
@@ -154,6 +154,7 @@ class WebGLApp extends EventEmitter {
           const nextScene = () => {
             // Set the current scene
             this.currentScene = scene;
+            this.currentScene.resize(rendererSize.x, rendererSize.y);
             // Animate the scene in
             this.currentScene.animateIn().then(resolve, reject);
             // Update the post processing scene transition pass

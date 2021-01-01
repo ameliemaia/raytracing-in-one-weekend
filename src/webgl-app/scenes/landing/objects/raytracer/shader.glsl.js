@@ -19,6 +19,12 @@ export const utils = `
     vec3 direction;
   };
 
+  struct HitRecord {
+    float t;
+    vec3 position;
+    vec3 normal;
+  };
+
   vec3 pointAtParameter(float t, Ray ray) {
     return ray.origin + t * ray.direction;
   }
@@ -27,7 +33,7 @@ export const utils = `
 export const calculateNormals = `
   vec3 calculateNormals(float t, vec3 center, Ray ray) {
     vec3 normal = pointAtParameter(t, ray) - center;
-    normal /= length(normal);
+    normal /= length(normal); // make normal unit length
     return normal;
   }
 `;

@@ -35,7 +35,7 @@ export default class LandingScene extends BaseScene {
     this.cameras.dev.updateProjectionMatrix();
     this.cameras.main.aspect = width / height;
     this.cameras.main.updateProjectionMatrix();
-    this.raytracer.resize();
+    this.raytracer.resize(width, height);
   };
 
   /**

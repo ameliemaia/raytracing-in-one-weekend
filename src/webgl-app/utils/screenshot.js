@@ -79,15 +79,15 @@ export default class Screenshot {
    * @memberof Screenshot
    */
   save = () => {
-    const quality = 0.75;
-    const filename = 'screenshot.jpg';
-    const format = 'image/jpeg';
+    // const quality = 0.75;
+    const filename = 'screenshot.png';
+    const format = 'image/png';
     this.canvas.toBlob(
       function(blob) {
         saveAs(blob, filename);
       },
-      format,
-      quality
+      format
+      // quality
     );
   };
 
@@ -121,15 +121,16 @@ export default class Screenshot {
     renderer.setScissor(left, bottom, width, height);
 
     // Update the final pass uniforms
+    scene.resize(this.width, this.height);
     postProcessing.finalPass.resize(this.width, this.height);
 
     // Render the current scene into renderTargetA
     renderer.setRenderTarget(this.renderTargetA);
-    renderer.render(scene, camera);
+    renderer.render(scene.scene, camera);
     renderer.setRenderTarget(null);
 
     // Apply the post processing fx which is output into renderTargetB
-    postProcessing.finalPass.screenshotRender(scene, camera, this.renderTargetA, this.renderTargetB, 0);
+    postProcessing.finalPass.screenshotRender(scene.scene, camera, this.renderTargetA, this.renderTargetB, 0);
     // Put the rendered pixels into the pixelBuffer
     renderer.readRenderTargetPixels(
       this.renderTargetB,
@@ -154,6 +155,7 @@ export default class Screenshot {
 
     // Reset the finalpass uniforms
     postProcessing.finalPass.resize(finalPassWidth, finalPassHeight);
+    scene.resize(finalPassWidth, this.height);
 
     // Save out the image
     this.save();

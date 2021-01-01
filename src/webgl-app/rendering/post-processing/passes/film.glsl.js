@@ -3,7 +3,7 @@ import { Material } from 'three';
 import { rand, PI } from '../../../shaders/math.glsl';
 
 export const uniforms = {
-  filmEnabled: { value: 1 },
+  filmEnabled: { value: 0 },
   filmNoiseIntensity: { value: 0.35 },
   filmScanIntensity: { value: 0.05 },
   filmScanCount: { value: 4096 },
@@ -75,7 +75,7 @@ export const fragmentMain = `
     outgoingColor.rgb = filmPass(outgoingColor.rgb, uv);
   }
   // Film pass end
-`
+`;
 
 export function guiControls(gui: GUI, material: Material) {
   const guiPass = gui.addFolder('film pass');
