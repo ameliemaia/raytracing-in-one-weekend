@@ -12,7 +12,7 @@ settings.baseUrl = process.env.PUBLIC_URL || '';
 settings.stats = true; //getQueryFromParams('stats') === null;
 
 // Enable dev camera rendering
-settings.devCamera = true; //getQueryFromParams('devCamera') === 'true';
+settings.devCamera = false; //getQueryFromParams('devCamera') === 'true';
 
 // Enable helpers
 settings.helpers = true; //getQueryFromParams('helpers') === 'true';
