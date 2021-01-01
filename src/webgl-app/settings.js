@@ -15,7 +15,7 @@ settings.stats = true; //getQueryFromParams('stats') === null;
 settings.devCamera = false; //getQueryFromParams('devCamera') === 'true';
 
 // Enable helpers
-settings.helpers = true; //getQueryFromParams('helpers') === 'true';
+settings.helpers = false; //getQueryFromParams('helpers') === 'true';
 
 // Enable dat gui
 settings.datGui = true; //getQueryFromParams('gui') === null;
@@ -32,6 +32,6 @@ settings.viewportPreviewScale = 0.25;
 // Unlock full render size (should be false for prod)
 settings.renderBufferFullscreen = false;
 
-settings.postProcessing = false;
+settings.postProcessing = true;
 
 export default settings;

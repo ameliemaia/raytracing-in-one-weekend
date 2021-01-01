@@ -98,7 +98,7 @@ class WebGLApp extends EventEmitter {
   }
 
   captureScreenshot = () => {
-    this.screenshot.capture(this.currentScene, this.currentScene.camera);
+    this.screenshot.capture2(this.currentScene, this.currentScene.camera);
   };
 
   /**
