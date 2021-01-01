@@ -1,5 +1,6 @@
 import { Vector2 } from 'three';
 import ray from './ray.glsl';
+import camera from './camera.glsl';
 import sphere from './sphere.glsl';
 import hitables from './hitables.glsl';
 import { WORLD_SIZE } from './constants';
@@ -43,6 +44,7 @@ export const fragmentShader = `
   varying vec2 vUv;
 
   ${ray}
+  ${camera}
   ${sphere}
   ${hitables}
   ${calculateNormals}
@@ -64,6 +66,13 @@ export const fragmentShader = `
     vec3 vertical = vec3(0.0, screenSize, 0.0); // -2, -2, 2, 2
 
     Ray ray = Ray(vec3(0), lowerLeftCorner + uv.x * horizontal + uv.y * vertical);
+
+    Camera camera = Camera(
+      lowerLeftCorner,
+      horizontal,
+      vertical,
+      ray
+    );
 
     vec3 outgoingColor = raytrace(ray, world);
     // vec3 outgoingColor = vec3(1);
