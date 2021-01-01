@@ -34,6 +34,14 @@ export default class LandingScene extends BaseScene {
     });
   }
 
+  resize = (width: number, height: number) => {
+    this.cameras.dev.aspect = width / height;
+    this.cameras.dev.updateProjectionMatrix();
+    this.cameras.main.aspect = width / height;
+    this.cameras.main.updateProjectionMatrix();
+    this.raytracer.resize();
+  };
+
   /**
    * Update loop
    *
