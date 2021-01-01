@@ -45,5 +45,6 @@ export default class LandingScene extends BaseScene {
    */
   update = (delta: number) => {
     this.controls.main.update();
+    this.raytracer.update(delta);
   };
 }

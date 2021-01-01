@@ -7,12 +7,6 @@ export default `
     vec3 normal;
   };
 
-  struct Hitable {
-    Ray ray;
-    float tMin;
-    float tMax;
-  };
-
   bool sphereHit(Ray ray, float tMin, float tMax, Sphere sphere, inout HitRecord hitRecord) {
     vec3 oc = ray.origin - sphere.center;
     float a = dot(ray.direction, ray.direction); // origin
@@ -39,11 +33,11 @@ export default `
   }
 
   bool hit(Ray ray, float tMin, float tMax, Sphere list[${WORLD_SIZE}], inout HitRecord hitRecord) {
+    HitRecord tempRecord;
     bool hitAnything = false;
     float closestSoFar = tMax;
-    HitRecord tempRecord;
     for(int i = 0; i < ${WORLD_SIZE}; i++) {
-      if (sphereHit(ray, tMin, tMax, list[i], tempRecord)) {
+      if (sphereHit(ray, tMin, closestSoFar, list[i], tempRecord)) {
         hitAnything = true;
         closestSoFar = tempRecord.t;
         hitRecord = tempRecord;

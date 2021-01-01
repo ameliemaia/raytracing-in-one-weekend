@@ -18,4 +18,8 @@ export default class Raytracer {
     this.mesh.material.uniforms.resolution.value.x = width;
     this.mesh.material.uniforms.resolution.value.y = height;
   }
+
+  update(delta: number) {
+    this.mesh.material.uniforms.time.value += delta;
+  }
 }
