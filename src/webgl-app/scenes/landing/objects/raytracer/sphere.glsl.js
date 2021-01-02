@@ -2,6 +2,7 @@ export default `
   struct Sphere {
     vec3 center;
     float radius;
+    Material material;
   };
 
   float sphere(Sphere sphere, Ray ray) {

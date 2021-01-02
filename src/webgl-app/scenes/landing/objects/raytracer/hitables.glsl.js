@@ -1,12 +1,6 @@
 import { WORLD_SIZE } from './constants';
 
 export default `
- struct HitRecord {
-    float t;
-    vec3 position;
-    vec3 normal;
-  };
-
   bool sphereHit(Ray ray, float tMin, float tMax, Sphere sphere, inout HitRecord hitRecord) {
     vec3 oc = ray.origin - sphere.center;
     float a = dot(ray.direction, ray.direction); // origin
@@ -19,6 +13,7 @@ export default `
         hitRecord.t = temp;
         hitRecord.position = pointAtParameter(hitRecord.t, ray);
         hitRecord.normal = (hitRecord.position - sphere.center) / sphere.radius;
+        hitRecord.material = sphere.material;
         return true;
       }
       temp = (-b + sqrt(discriminant)) / a;
@@ -26,6 +21,7 @@ export default `
         hitRecord.t = temp;
         hitRecord.position = pointAtParameter(hitRecord.t, ray);
         hitRecord.normal = (hitRecord.position - sphere.center) / sphere.radius;
+        hitRecord.material = sphere.material;
         return true;
       }
       return false;
@@ -33,9 +29,9 @@ export default `
   }
 
   bool hit(Ray ray, float tMin, float tMax, Sphere list[${WORLD_SIZE}], inout HitRecord hitRecord) {
-    HitRecord tempRecord;
     bool hitAnything = false;
     float closestSoFar = tMax;
+    HitRecord tempRecord = hitRecord;
     for(int i = 0; i < ${WORLD_SIZE}; i++) {
       if (sphereHit(ray, tMin, closestSoFar, list[i], tempRecord)) {
         hitAnything = true;
