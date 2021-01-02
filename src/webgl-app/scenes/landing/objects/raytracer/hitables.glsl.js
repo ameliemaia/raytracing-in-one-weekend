@@ -7,6 +7,7 @@ export default `
     float b = dot(oc, ray.direction); // direction
     float c = dot(oc, oc) - sphere.radius * sphere.radius;
     float discriminant = b * b - a * c;
+
     if(discriminant > 0.0) {
       float temp = (-b - sqrt(discriminant)) / a;
       if (temp < tMax && temp > tMin) {
@@ -31,6 +32,7 @@ export default `
   bool hit(Ray ray, float tMin, float tMax, Sphere list[${WORLD_SIZE}], inout HitRecord hitRecord) {
     bool hitAnything = false;
     float closestSoFar = tMax;
+    // If record doesn't hit, we use the previous
     HitRecord tempRecord = hitRecord;
     for(int i = 0; i < ${WORLD_SIZE}; i++) {
       if (sphereHit(ray, tMin, closestSoFar, list[i], tempRecord)) {

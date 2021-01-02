@@ -32,7 +32,20 @@ export default class Raytracer {
       left: '0'
     });
 
+    this.addControl(0);
+    this.addControl(1);
+    this.addControl(2);
+
     // document.body.appendChild(this.canvas);
+  }
+
+  addControl(index: number) {
+    const guiFolder = this.gui.addFolder(`sphere${index}`);
+    guiFolder.open();
+    const range = 5;
+    guiFolder.add(this.mesh.material.uniforms[`sphere${index}Position`].value, 'x', -range, range);
+    guiFolder.add(this.mesh.material.uniforms[`sphere${index}Position`].value, 'y', -range, range);
+    guiFolder.add(this.mesh.material.uniforms[`sphere${index}Position`].value, 'z', -range, range);
   }
 
   resize(width: number, height: number) {

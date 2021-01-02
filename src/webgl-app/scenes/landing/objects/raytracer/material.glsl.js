@@ -1,13 +1,16 @@
 export default `
 
-  bool scatter(inout Ray ray, HitRecord hitRecord, out vec3 attenuation) {
-    attenuation = hitRecord.material.albedo;
+
+  bool scatter(inout Ray ray, HitRecord hitRecord, out vec3 attenuation, out Ray scatteredRay) {
     if(hitRecord.material.type == METAL) {
-      vec3 reflected = reflect(ray.direction, hitRecord.normal);
-      ray = Ray(hitRecord.position, reflected);
-      return (dot(ray.direction, hitRecord.normal) > 0.0);
+      attenuation = hitRecord.material.albedo;
+      vec3 reflected = reflect(normalize(ray.direction), hitRecord.normal);
+      scatteredRay = Ray(hitRecord.position, reflected);
+      attenuation = hitRecord.material.albedo;
+      return (dot(scatteredRay.direction, hitRecord.normal) > 0.0);
     } else {
-      ray = Ray(hitRecord.position, normalize(hitRecord.normal + randomInSphere()));
+      scatteredRay = Ray(hitRecord.position, normalize(hitRecord.normal + randomInSphere()));
+      attenuation = hitRecord.material.albedo;
       return true;
     }
   }
