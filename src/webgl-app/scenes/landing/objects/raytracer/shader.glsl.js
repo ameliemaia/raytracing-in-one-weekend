@@ -47,6 +47,9 @@ export const raytrace = `
             color *= attenuation;
             ray = scatteredRay;
           } else {
+            // Sky color
+            // float t = 0.5 * ray.direction.y + 1.0;
+            // color *= mix(vec3(1), vec3(0.5, 0.7, 1.0), t);
             return vec3(0);
           }
       } else {

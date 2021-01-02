@@ -1,32 +1,35 @@
 import { WORLD_SIZE } from './constants';
 
 export default `
-  bool sphereHit(Ray ray, float tMin, float tMax, Sphere sphere, inout HitRecord hitRecord) {
+  bool sphereHit(Ray ray, const in float tMin, const in float tMax, const in Sphere sphere, inout HitRecord hitRecord) {
+
     vec3 oc = ray.origin - sphere.center;
     float a = dot(ray.direction, ray.direction); // origin
-    float b = dot(oc, ray.direction); // direction
+    float b = dot(oc, ray.direction);
     float c = dot(oc, oc) - sphere.radius * sphere.radius;
     float discriminant = b * b - a * c;
 
-    if(discriminant > 0.0) {
-      float temp = (-b - sqrt(discriminant)) / a;
-      if (temp < tMax && temp > tMin) {
-        hitRecord.t = temp;
-        hitRecord.position = pointAtParameter(hitRecord.t, ray);
-        hitRecord.normal = (hitRecord.position - sphere.center) / sphere.radius;
-        hitRecord.material = sphere.material;
-        return true;
-      }
-      temp = (-b + sqrt(discriminant)) / a;
-      if (temp < tMax && temp > tMin) {
-        hitRecord.t = temp;
-        hitRecord.position = pointAtParameter(hitRecord.t, ray);
-        hitRecord.normal = (hitRecord.position - sphere.center) / sphere.radius;
-        hitRecord.material = sphere.material;
-        return true;
-      }
-      return false;
+    if (discriminant < 0.0) return false;
+
+    float s = sqrt(discriminant);
+
+    float temp = (-b - s) / a;
+    if (temp < tMax && temp > tMin) {
+      hitRecord.t = temp;
+      hitRecord.position = ray.origin + temp * ray.direction;
+      hitRecord.normal = (hitRecord.position - sphere.center) / sphere.radius;
+      hitRecord.material = sphere.material;
+      return true;
     }
+    temp = (-b + s) / a;
+    if (temp < tMax && temp > tMin) {
+      hitRecord.t = temp;
+      hitRecord.position = ray.origin + temp * ray.direction;
+      hitRecord.normal = (hitRecord.position - sphere.center) / sphere.radius;
+      hitRecord.material = sphere.material;
+      return true;
+    }
+    return false;
   }
 
   bool hit(Ray ray, float tMin, float tMax, Sphere list[${WORLD_SIZE}], inout HitRecord hitRecord) {
