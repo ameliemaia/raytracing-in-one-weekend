@@ -6,11 +6,10 @@ import hitables from './hitables.glsl';
 import { WORLD_SIZE, MAX_RECURSION } from './constants';
 import { ShaderChunk } from 'three';
 
-console.log(ShaderChunk.encodings_fragment);
-
 export const uniforms = {
   resolution: { value: new Vector2() },
   screenSize: { value: 2 },
+  randomMap: { value: null },
   time: { value: 2 }
 };
 
@@ -33,20 +32,18 @@ export const calculateNormals = `
 export const raytrace = `
 
   #define MAX_FLOAT 1e5
+  #define PI 3.141592653589793
+  #define TWO_PI 6.283185307179586
 
-  float random (vec2 st) {
-    return fract(sin(dot(st.xy, vec2(12.9898,78.233))) * 43758.5453123);
-  }
-
-  vec3 randomInSphere(vec3 position) {
-    float x = random(position.xy);
-    float y = random(vUv);
-    float z = random(position.xz);
-    float r = sqrt(x*x + y*y + z*z);
-    x /= r;
-    y /= r;
-    z /= r;
-    return normalize(vec3(x, y, z));
+  vec3 randomInSphere(){
+    vec2 uv = texture2D(randomMap, vUv).xy;
+    float theta = 2.0 * PI * uv.x;
+    float phi = acos(2.0 * uv.y - 1.0);
+    float radius = 1.0;
+    float x = (radius * sin(phi) * cos(theta));
+    float y = (radius * sin(phi) * sin(theta));
+    float z = (radius * cos(phi));
+    return vec3(x, y, z);
   }
 
   vec3 raytrace(in Ray ray, Sphere world[${WORLD_SIZE}]) {
@@ -55,12 +52,12 @@ export const raytrace = `
 
     for(int i = 0; i < ${MAX_RECURSION}; i++) {
       if (hit(ray, 0.001, MAX_FLOAT, world, hitRecord)) {
-        vec3 target = hitRecord.position + hitRecord.normal + randomInSphere(hitRecord.position);
+        vec3 target = hitRecord.position + hitRecord.normal + randomInSphere();
         ray.origin = hitRecord.position;
         ray.direction = normalize(target - hitRecord.position);
         color *= 0.5;
       } else {
-        float t = 0.5 * ray.direction.y + 0.5;
+        float t = 0.5 * ray.direction.y + 1.0;
         color *= mix(vec3(1), vec3(0.5, 0.7, 1.0), t);
         return color;
       }
@@ -71,6 +68,7 @@ export const raytrace = `
 `;
 
 export const fragmentShader = `
+  uniform sampler2D randomMap;
   uniform vec2 resolution;
   uniform float screenSize;
   varying vec2 vUv;
@@ -98,7 +96,30 @@ export const fragmentShader = `
     vec3 horizontal = vec3(screenSize * 2.0, 0.0, 0.0); // screen space coords for scanning the scene
     vec3 vertical = vec3(0.0, screenSize, 0.0); // -2, -2, 2, 2
 
-    Ray ray = Ray(vec3(0), lowerLeftCorner + uv.x * horizontal + uv.y * vertical);
+    // Anti aliasing
+    // vec2 random  = texture2D(randomMap, vUv).xy;
+    // const int ns = 100;
+    // vec3 col = vec3(0);
+    // float scale = 0.00001;
+    // for(int i = 0; i < ns; i++) {
+    //   float u = ((random.x * 2.0 - 1.0) * scale) + uv.x;
+    //   float v = ((random.y * 2.0 - 1.0) * scale) + uv.y;
+
+    //   Ray ray = getRay(u, v, lowerLeftCorner, horizontal, vertical);
+    //   Camera camera = Camera(
+    //     lowerLeftCorner,
+    //     horizontal,
+    //     vertical,
+    //     ray
+    //   );
+
+    //   col += raytrace(ray, world);
+    // }
+
+    // col /= float(ns);
+    // vec3 outgoingColor = col;
+
+    Ray ray = getRay(uv.x, uv.y, lowerLeftCorner, horizontal, vertical);
 
     Camera camera = Camera(
       lowerLeftCorner,
@@ -110,7 +131,6 @@ export const fragmentShader = `
     vec3 outgoingColor = raytrace(ray, world);
 
     gl_FragColor = vec4(outgoingColor, 1.0);
-
-    ${ShaderChunk.encodings_fragment}
+    gl_FragColor = LinearTosRGB(gl_FragColor);
   }
 `;

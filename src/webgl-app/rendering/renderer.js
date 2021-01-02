@@ -1,4 +1,4 @@
-import { WebGLRenderer } from 'three';
+import { sRGBEncoding, WebGLRenderer } from 'three';
 import graphics, { getGraphicsMode, getTier } from './graphics';
 import settings from '../settings';
 import { setRendererSize } from './resize';
@@ -13,6 +13,7 @@ const renderer = new WebGLRenderer({
   stencil: false
 });
 renderer.setClearColor(0x000000);
+renderer.outputEncoding = sRGBEncoding;
 
 // Enable shader errors during dev
 renderer.debug.checkShaderErrors = settings.isDevelopment;
