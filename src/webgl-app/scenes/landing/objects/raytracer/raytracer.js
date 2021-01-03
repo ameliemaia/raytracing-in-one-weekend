@@ -73,6 +73,7 @@ export default class Raytracer {
   }
 
   update(delta: number) {
+    this.generateNoise();
     this.mesh.material.uniforms.time.value += delta;
   }
 }

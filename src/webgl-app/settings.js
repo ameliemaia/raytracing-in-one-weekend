@@ -30,8 +30,8 @@ settings.guiPrecision = 0.001;
 settings.viewportPreviewScale = 0.25;
 
 // Unlock full render size (should be false for prod)
-settings.renderBufferFullscreen = true;
+settings.renderBufferFullscreen = false;
 
-settings.postProcessing = false;
+settings.postProcessing = true;
 
 export default settings;

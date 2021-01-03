@@ -163,39 +163,39 @@ export default class Screenshot {
 
   capture2(scene: BaseScene, camera: PerspectiveCamera) {
     // Save aspect for resetting after render
-    const aspect = camera.aspect;
+    // const aspect = camera.aspect;
 
-    // Update aspect to the screenshot size ratio
-    camera.aspect = this.width / this.height;
-    camera.updateProjectionMatrix();
+    // // Update aspect to the screenshot size ratio
+    // camera.aspect = this.width / this.height;
+    // camera.updateProjectionMatrix();
 
-    // Save current width / height
-    const finalPassWidth = postProcessing.finalPass.mesh.material.uniforms.resolution.value.x;
-    const finalPassHeight = postProcessing.finalPass.mesh.material.uniforms.resolution.value.y;
-    const left = 0;
-    const bottom = 0;
-    const width = rendererSize.x;
-    const height = rendererSize.y;
+    // // Save current width / height
+    // const finalPassWidth = postProcessing.finalPass.mesh.material.uniforms.resolution.value.x;
+    // const finalPassHeight = postProcessing.finalPass.mesh.material.uniforms.resolution.value.y;
+    // const left = 0;
+    // const bottom = 0;
+    // const width = rendererSize.x;
+    // const height = rendererSize.y;
 
-    renderer.setSize(this.width, this.height);
-    renderer.setViewport(left, bottom, this.width, this.height);
-    renderer.setScissor(left, bottom, this.width, this.height);
+    // renderer.setSize(this.width, this.height);
+    // renderer.setViewport(left, bottom, this.width, this.height);
+    // renderer.setScissor(left, bottom, this.width, this.height);
 
-    // Update the final pass uniforms
-    scene.resize(this.width, this.height);
+    // // Update the final pass uniforms
+    // scene.resize(this.width, this.height);
 
-    // Render the current scene into renderTargetA
-    renderer.render(scene.scene, camera);
+    // // Render the current scene into renderTargetA
+    // renderer.render(scene.scene, camera);
 
-    // Reset the camera aspect
-    camera.aspect = aspect;
-    camera.updateProjectionMatrix();
+    // // Reset the camera aspect
+    // camera.aspect = aspect;
+    // camera.updateProjectionMatrix();
 
-    // Reset the finalpass uniforms
-    scene.resize(finalPassWidth, finalPassHeight);
-    renderer.setSize(this.width, this.height);
-    renderer.setViewport(left, bottom, width, height);
-    renderer.setScissor(left, bottom, width, height);
+    // // Reset the finalpass uniforms
+    // scene.resize(finalPassWidth, finalPassHeight);
+    // renderer.setSize(this.width, this.height);
+    // renderer.setViewport(left, bottom, width, height);
+    // renderer.setScissor(left, bottom, width, height);
 
     const filename = 'screenshot.png';
     const format = 'image/png';

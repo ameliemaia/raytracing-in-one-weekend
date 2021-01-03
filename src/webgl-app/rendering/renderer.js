@@ -10,7 +10,8 @@ const { pixelRatio, antialias } = graphics[getGraphicsMode()];
 const renderer = new WebGLRenderer({
   antialias,
   powerPreference: 'high-performance',
-  stencil: false
+  stencil: false,
+  preserveDrawingBuffer: true
 });
 renderer.setClearColor(0x000000);
 renderer.outputEncoding = sRGBEncoding;

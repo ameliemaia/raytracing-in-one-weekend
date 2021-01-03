@@ -28,6 +28,8 @@ export default class RenderTargetHelper {
       zIndex: '1000',
       border: '1px solid white',
       pointerEvents: 'none',
+      transform: 'scale(0.25)',
+      transformOrigin: '0 0',
       width: `${renderTarget.width}px`,
       height: `${renderTarget.height}px`
     });

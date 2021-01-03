@@ -49,7 +49,7 @@ export function getTier(): string {
 // Graphics settings for the renderer
 export default {
   [GRAPHICS_HIGH]: {
-    antialias: true, // Enable antialias if you're not using post processing
+    antialias: false, // Enable antialias if you're not using post processing
     pixelRatio: math.clamp(window.devicePixelRatio, 1, 2),
     maxFrameBufferSize: new Vector2(1280, 720)
   },

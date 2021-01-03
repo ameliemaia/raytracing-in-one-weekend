@@ -43,6 +43,6 @@ export function setRendererSize(renderer: WebGLRenderer, windowWidth: number, wi
   rendererSize.x = width;
   rendererSize.y = height;
   renderer.setSize(width, height);
-  renderer.domElement.style.width = `${windowWidth}px`;
-  renderer.domElement.style.height = `${windowHeight}px`;
+  // renderer.domElement.style.width = `${windowWidth}px`;
+  // renderer.domElement.style.height = `${windowHeight}px`;
 }
