@@ -1,7 +1,7 @@
 import { CanvasTexture, Mesh, NearestFilter, PlaneBufferGeometry, ShaderMaterial, sRGBEncoding } from 'three';
 import { getRenderBufferSize } from '../../../../rendering/resize';
 import createCanvas from '../../../../utils/canvas';
-import { uniforms, vertexShader, fragmentShader } from './shader.glsl';
+import { uniforms, vertexShader, fragmentShader } from './raytracer.glsl';
 
 export default class Raytracer {
   constructor(gui: GUI) {

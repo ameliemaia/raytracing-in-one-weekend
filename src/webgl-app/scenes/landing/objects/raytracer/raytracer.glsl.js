@@ -4,7 +4,8 @@ import camera from './camera.glsl';
 import sphere from './sphere.glsl';
 import hitables from './hitables.glsl';
 import material from './material.glsl';
-import { WORLD_SIZE, MAX_RECURSION } from './constants';
+import world from './world.glsl';
+import { WORLD_SIZE } from './constants';
 
 export const uniforms = {
   resolution: { value: new Vector2() },
@@ -24,55 +25,13 @@ export const vertexShader = `
   }
 `;
 
-export const calculateNormals = `
-  vec3 calculateNormals(float t, vec3 center, Ray ray) {
-    vec3 normal = pointAtParameter(t, ray) - center;
-    normal /= length(normal); // make normal unit length
-    return normal;
-  }
-`;
-
-export const raytrace = `
-
-
-  vec3 raytrace(in Ray ray, Sphere world[${WORLD_SIZE}]) {
-    HitRecord hitRecord;
-    vec3 color = vec3(1);
-
-    for(int i = 0; i < ${MAX_RECURSION}; i++) {
-      Ray scatteredRay;
-      if (hit(ray, 0.001, MAX_FLOAT, world, hitRecord)) {
-          vec3 attenuation;
-          if(scatter(ray, hitRecord, attenuation, scatteredRay)) {
-            color *= attenuation;
-            ray = scatteredRay;
-          } else {
-            // Sky color
-            // float t = 0.5 * ray.direction.y + 1.0;
-            // color *= mix(vec3(1), vec3(0.5, 0.7, 1.0), t);
-            return vec3(0);
-          }
-      } else {
-        // Sky color
-        float t = 0.5 * ray.direction.y + 1.0;
-        color *= mix(vec3(1), vec3(0.5, 0.7, 1.0), t);
-        return color;
-      }
-    }
-
-    return vec3(0);
-  }
-`;
-
 export const fragmentShader = `
   uniform sampler2D randomMap;
   uniform vec2 resolution;
   uniform float screenSize;
-
   uniform vec3 sphere0Position;
   uniform vec3 sphere1Position;
   uniform vec3 sphere2Position;
-
   varying vec2 vUv;
 
   #define MAX_FLOAT 1e5
@@ -109,8 +68,13 @@ export const fragmentShader = `
   ${sphere}
   ${material}
   ${hitables}
-  ${calculateNormals}
-  ${raytrace}
+  ${world}
+
+  vec3 calculateNormals(float t, vec3 center, Ray ray) {
+    vec3 normal = pointAtParameter(t, ray) - center;
+    normal /= length(normal); // make normal unit length
+    return normal;
+  }
 
   void main(){
 
@@ -162,7 +126,7 @@ export const fragmentShader = `
       ray
     );
 
-    vec3 outgoingColor = raytrace(ray, world);
+    vec3 outgoingColor = raytraceWorld(ray, world);
 
     gl_FragColor = vec4(outgoingColor, 1.0);
     gl_FragColor = LinearTosRGB(gl_FragColor);
