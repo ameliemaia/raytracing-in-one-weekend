@@ -1,4 +1,4 @@
-import { Vector2, Vector3 } from 'three';
+import { Vector2, Vector3, Vector4 } from 'three';
 import ray from './ray.glsl';
 import camera from './camera.glsl';
 import sphere from './sphere.glsl';
@@ -10,7 +10,7 @@ import { WORLD_SIZE } from './constants';
 export const uniforms = {
   resolution: { value: new Vector2() },
   screenSize: { value: 2 },
-  randomMap: { value: null },
+  seed: { value: new Vector4(Math.random(), Math.random(), Math.random(), Math.random()) },
   time: { value: 2 },
   sphere0Position: { value: new Vector3(0.0, 0.0, -1.0) },
   sphere1Position: { value: new Vector3(1.0, 0.0, -1.0) },
@@ -26,8 +26,9 @@ export const vertexShader = `
 `;
 
 export const fragmentShader = `
-  uniform sampler2D randomMap;
   uniform vec2 resolution;
+  uniform float time;
+  uniform vec4 seed;
   uniform float screenSize;
   uniform vec3 sphere0Position;
   uniform vec3 sphere1Position;
@@ -40,8 +41,13 @@ export const fragmentShader = `
   #define LAMBERT 0
   #define METAL 1
 
+
+  float rand(vec2 co){
+    return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
+  }
+
   vec3 randomInSphere(){
-    vec2 uv = texture2D(randomMap, vUv).xy;
+    vec2 uv = vec2(rand(vUv + seed.xy), rand(vUv + seed.xz));
     float theta = 2.0 * PI * uv.x;
     float phi = acos(2.0 * uv.y - 1.0);
     float radius = 1.0;
@@ -95,7 +101,6 @@ export const fragmentShader = `
     vec3 vertical = vec3(0.0, screenSize, 0.0); // -2, -2, 2, 2
 
     // Anti aliasing
-    // vec2 random  = texture2D(randomMap, vUv).xy;
     // const int ns = 20;
     // vec3 col = vec3(0);
     // float scale = 0.00001;
