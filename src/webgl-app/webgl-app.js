@@ -186,7 +186,7 @@ class WebGLApp extends EventEmitter {
    */
   resize = (width: number, height: number) => {
     setRendererSize(renderer, width, height);
-    this.currentScene.resize(width, height);
+    this.currentScene.resize(rendererSize.x, rendererSize.y);
     postProcessing.resize();
     this.viewport.debug.set(
       0,

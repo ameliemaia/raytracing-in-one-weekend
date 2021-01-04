@@ -41,7 +41,6 @@ export const fragmentShader = `
   #define LAMBERT 0
   #define METAL 1
 
-
   float rand(vec2 co){
     return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
   }
@@ -59,7 +58,7 @@ export const fragmentShader = `
 
   struct Material {
     int type;
-    vec3 albedo;
+    vec4 albedo;
   };
 
   struct HitRecord {
@@ -91,10 +90,10 @@ export const fragmentShader = `
     uv.y += 0.5;
 
     Sphere world[${WORLD_SIZE}];
-    world[0] = Sphere(sphere0Position, 0.5, Material(LAMBERT, vec3(0.8, 0.3, 0.3)));
-    world[1] = Sphere(vec3(0.0, -100.5, -1.0), 100.0, Material(LAMBERT, vec3(0.5)));
-    world[2] = Sphere(sphere1Position, 0.5, Material(METAL, vec3(0.8, 0.6, 0.2)));
-    world[3] = Sphere(sphere2Position, 0.5, Material(METAL, vec3(0.8, 0.8, 0.8)));
+    world[0] = Sphere(sphere0Position, 0.5, Material(LAMBERT, vec4(0.8, 0.3, 0.3, 0.0)));
+    world[1] = Sphere(vec3(0.0, -100.5, -1.0), 100.0, Material(LAMBERT, vec4(0.5, 0.5, 0.5, 0.0)));
+    world[2] = Sphere(sphere1Position, 0.5, Material(METAL, vec4(0.8, 0.6, 0.2, 1.0)));
+    world[3] = Sphere(sphere2Position, 0.5, Material(METAL, vec4(0.8, 0.8, 0.8, 0.3)));
 
     vec3 lowerLeftCorner = vec3(-screenSize, -screenSize*0.5, -1.0);
     vec3 horizontal = vec3(screenSize * 2.0, 0.0, 0.0); // screen space coords for scanning the scene

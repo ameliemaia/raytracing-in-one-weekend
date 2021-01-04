@@ -21,7 +21,7 @@ settings.helpers = false; //getQueryFromParams('helpers') === 'true';
 settings.datGui = true; //getQueryFromParams('gui') === null;
 
 // Skips all transitions
-settings.skipTransitions = false; //getQueryFromParams('skipTransitions') === null;
+settings.skipTransitions = true; //getQueryFromParams('skipTransitions') === null;
 
 // GUI Number precision
 settings.guiPrecision = 0.001;
@@ -30,7 +30,7 @@ settings.guiPrecision = 0.001;
 settings.viewportPreviewScale = 0.25;
 
 // Unlock full render size (should be false for prod)
-settings.renderBufferFullscreen = true;
+settings.renderBufferFullscreen = false;
 
 settings.postProcessing = false;
 

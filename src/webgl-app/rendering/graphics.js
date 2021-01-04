@@ -51,7 +51,7 @@ export default {
   [GRAPHICS_HIGH]: {
     antialias: false, // Enable antialias if you're not using post processing
     pixelRatio: math.clamp(window.devicePixelRatio, 1, 2),
-    maxFrameBufferSize: new Vector2(1280 / 2, 720 / 2)
+    maxFrameBufferSize: new Vector2(1920, 1080)
   },
   [GRAPHICS_NORMAL]: {
     antialias: false,

@@ -34,15 +34,27 @@ function resize(windowWidth: number, windowHeight: number): { width: number, hei
   };
 }
 
+const screenshot = false;
+const isPortrait = false;
+
 export function setRendererSize(renderer: WebGLRenderer, windowWidth: number, windowHeight: number) {
   let { width, height } = resize(windowWidth, windowHeight);
   if (settings.renderBufferFullscreen) {
     width = windowWidth;
     height = windowHeight;
   }
-  rendererSize.x = width;
-  rendererSize.y = height;
-  renderer.setSize(width, height);
-  renderer.domElement.style.width = `${windowWidth}px`;
-  renderer.domElement.style.height = `${windowHeight}px`;
+
+  if (screenshot) {
+    width = maxFrameBufferSize.x;
+    height = maxFrameBufferSize.y;
+  }
+
+  rendererSize.x = isPortrait ? height : width;
+  rendererSize.y = isPortrait ? width : height;
+  renderer.setSize(rendererSize.x, rendererSize.y);
+
+  if (!screenshot) {
+    renderer.domElement.style.width = `${windowWidth}px`;
+    renderer.domElement.style.height = `${windowHeight}px`;
+  }
 }

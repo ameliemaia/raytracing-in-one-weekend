@@ -77,6 +77,7 @@ export default class PostProcessing {
   resize() {
     // const scale = settings.devCamera ? settings.viewportPreviewScale : 1;
     let { width, height } = getRenderBufferSize();
+
     // width *= scale;
     // height *= scale;
     this.renderTargetTransitionA.setSize(width, height);
