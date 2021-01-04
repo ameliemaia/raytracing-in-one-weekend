@@ -20,7 +20,7 @@ renderer.outputEncoding = sRGBEncoding;
 renderer.debug.checkShaderErrors = settings.isDevelopment;
 
 const guiRendering = gui.addFolder('rendering');
-// guiRendering.open();
+guiRendering.open();
 
 renderer.setPixelRatio(pixelRatio);
 renderer.setScissorTest(true);

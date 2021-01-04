@@ -1,4 +1,5 @@
 import { CanvasTexture, Mesh, NearestFilter, PlaneBufferGeometry, ShaderMaterial, sRGBEncoding } from 'three';
+import { postProcessing } from '../../../../rendering/renderer';
 import { getRenderBufferSize } from '../../../../rendering/resize';
 import createCanvas from '../../../../utils/canvas';
 import { uniforms, vertexShader, fragmentShader } from './raytracer.glsl';
@@ -43,10 +44,20 @@ export default class Raytracer {
     const guiFolder = this.gui.addFolder(`sphere${index}`);
     guiFolder.open();
     const range = 5;
-    guiFolder.add(this.mesh.material.uniforms[`sphere${index}Position`].value, 'x', -range, range);
-    guiFolder.add(this.mesh.material.uniforms[`sphere${index}Position`].value, 'y', -range, range);
-    guiFolder.add(this.mesh.material.uniforms[`sphere${index}Position`].value, 'z', -range, range);
+    guiFolder
+      .add(this.mesh.material.uniforms[`sphere${index}Position`].value, 'x', -range, range)
+      .onChange(this.onChange);
+    guiFolder
+      .add(this.mesh.material.uniforms[`sphere${index}Position`].value, 'y', -range, range)
+      .onChange(this.onChange);
+    guiFolder
+      .add(this.mesh.material.uniforms[`sphere${index}Position`].value, 'z', -range, range)
+      .onChange(this.onChange);
   }
+
+  onChange = () => {
+    postProcessing.denoisePass.reset();
+  };
 
   resize(width: number, height: number) {
     this.mesh.material.uniforms.resolution.value.x = width;

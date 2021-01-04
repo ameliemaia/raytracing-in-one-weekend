@@ -31,7 +31,7 @@ export default class FinalPass {
   constructor(gui: GUI, geometry: BufferGeometry, camera: OrthographicCamera) {
     // Create gui
     this.gui = gui.addFolder('final pass');
-    this.gui.open();
+    this.gui.close();
     // Create scene
     this.scene = new Scene();
     // Use camera from post processing
@@ -92,10 +92,10 @@ export default class FinalPass {
    * @param {Number} delta
    * @memberof FinalPass
    */
-  render(scene: Scene, renderTarget: WebGLRenderTarget, delta: number) {
-    renderer.setRenderTarget(renderTarget);
-    renderer.render(scene.scene, scene.camera);
-    renderer.setRenderTarget(null);
+  render(scene: BaseScene, renderTarget: WebGLRenderTarget, delta: number) {
+    // renderer.setRenderTarget(renderTarget);
+    // renderer.render(scene.scene, scene.camera);
+    // renderer.setRenderTarget(null);
     this.mesh.material.uniforms.tDiffuse.value = renderTarget.texture;
     this.mesh.material.uniforms.time.value += delta;
     renderer.render(this.scene, this.camera);

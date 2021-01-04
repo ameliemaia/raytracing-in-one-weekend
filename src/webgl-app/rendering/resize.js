@@ -1,6 +1,6 @@
 import { Vector2, WebGLRenderer } from 'three';
 import graphics, { getGraphicsMode } from './graphics';
-import settings from '../settings';
+// import settings from '../settings';
 
 const { maxFrameBufferSize, pixelRatio } = graphics[getGraphicsMode()];
 
@@ -36,10 +36,10 @@ function resize(windowWidth: number, windowHeight: number): { width: number, hei
 
 export function setRendererSize(renderer: WebGLRenderer, windowWidth: number, windowHeight: number) {
   let { width, height } = resize(windowWidth, windowHeight);
-  if (settings.renderBufferFullscreen) {
-    width = windowWidth;
-    height = windowHeight;
-  }
+  // if (settings.renderBufferFullscreen) {
+  //   width = windowWidth;
+  //   height = windowHeight;
+  // }
   rendererSize.x = width;
   rendererSize.y = height;
   renderer.setSize(width, height);

@@ -79,7 +79,7 @@ export const fragmentMain = `
 
 export function guiControls(gui: GUI, material: Material) {
   const guiPass = gui.addFolder('film pass');
-  guiPass.open();
+  guiPass.close();
   guiPass.add(material.uniforms.filmEnabled, 'value', 0, 1, 1).name('enabled');
   guiPass.add(material.uniforms.filmNoiseIntensity, 'value', 0, 1).name('noise intensity');
   guiPass.add(material.uniforms.filmScanIntensity, 'value', 0, 1).name('scan intensity');

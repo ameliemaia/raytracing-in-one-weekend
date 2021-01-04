@@ -2,8 +2,8 @@ import { Vector2, Material } from 'three';
 import { GUI } from 'dat.gui';
 
 export const uniforms = {
-  fxaaEnabled: { value: 1 },
-	fxaaResolution: { value: new Vector2( 1 / 1024, 1 / 512 ) }
+  fxaaEnabled: { value: 0 },
+  fxaaResolution: { value: new Vector2(1 / 1024, 1 / 512) }
 };
 
 export const fragmentUniforms = `
@@ -1088,12 +1088,10 @@ export const fragmentMain = `
     outgoingColor.a = texture2D(tDiffuse, uv).a;
   }
   // FXAA pass end
-`
+`;
 
 export function guiControls(gui: GUI, material: Material) {
   const guiPass = gui.addFolder('fxaa pass');
-  guiPass.open();
+  guiPass.close();
   guiPass.add(material.uniforms.fxaaEnabled, 'value', 0, 1, 1).name('enabled');
 }
-
-

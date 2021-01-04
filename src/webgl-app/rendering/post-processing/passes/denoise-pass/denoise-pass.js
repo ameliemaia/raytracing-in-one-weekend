@@ -3,8 +3,12 @@ import renderer from '../../../renderer';
 import { getRenderBufferSize } from '../../../resize';
 import { vertexShader, fragmentShader } from './shader.glsl';
 
+const THRESHOLD = 0.05;
+
 export default class DenoisePass {
   constructor(gui: GUI, geometry: BufferGeometry, camera: OrthographicCamera) {
+    this.gui = gui.addFolder('denoise pass');
+    this.gui.open();
     this.scene = new Scene();
     this.camera = camera;
     const { width, height } = getRenderBufferSize();
@@ -15,6 +19,9 @@ export default class DenoisePass {
         },
         tDiffuse: {
           value: null
+        },
+        threshold: {
+          value: THRESHOLD
         },
         resolution: {
           value: new Vector2(width, height)
@@ -28,6 +35,13 @@ export default class DenoisePass {
     this.mesh.matrixAutoUpdate = false;
     this.mesh.updateMatrix();
     this.scene.add(this.mesh);
+
+    this.active = false;
+    this.passes = 0;
+
+    this.gui.add(this, 'passes').listen();
+    this.gui.add(this, 'active').onChange(this.reset);
+    this.gui.add(this.mesh.material.uniforms.threshold, 'value', 0, 1).name('threshold');
   }
 
   resize(width: number, height: number) {
@@ -35,11 +49,30 @@ export default class DenoisePass {
     this.mesh.material.uniforms.resolution.value.y = height;
   }
 
-  render(renderTargetCurrent: WebGLRenderTarget, renderTargetPrev: WebGLRenderTarget, renderTarget: WebGLRenderTarget) {
-    renderer.setRenderTarget(renderTarget);
+  reset = () => {
+    this.passes = 0;
+    this.mesh.material.uniforms.threshold.value = 1;
+    requestAnimationFrame(() => {
+      this.mesh.material.uniforms.threshold.value = THRESHOLD;
+    });
+  };
+
+  render(
+    scene: BaseScene,
+    renderTargetCurrent: WebGLRenderTarget,
+    renderTargetPrev: WebGLRenderTarget,
+    renderTargetCombined: WebGLRenderTarget
+  ) {
+    // Render current scene
+    renderer.setRenderTarget(renderTargetCurrent);
+    renderer.render(scene.scene, scene.camera);
+
+    // Render previous and current frame together
+    renderer.setRenderTarget(renderTargetCombined);
     this.mesh.material.uniforms.tDiffuse.value = renderTargetCurrent.texture;
     this.mesh.material.uniforms.tDiffusePrev.value = renderTargetPrev.texture;
     renderer.render(this.scene, this.camera);
     renderer.setRenderTarget(null);
+    this.passes++;
   }
 }

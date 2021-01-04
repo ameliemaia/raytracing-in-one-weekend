@@ -21,7 +21,7 @@ settings.helpers = false; //getQueryFromParams('helpers') === 'true';
 settings.datGui = true; //getQueryFromParams('gui') === null;
 
 // Skips all transitions
-settings.skipTransitions = true; //getQueryFromParams('skipTransitions') === null;
+settings.skipTransitions = false; //getQueryFromParams('skipTransitions') === null;
 
 // GUI Number precision
 settings.guiPrecision = 0.001;

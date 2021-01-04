@@ -24,7 +24,7 @@ export default class TransitionPass {
   constructor(gui: GUI, geometry: BufferGeometry, camera: OrthographicCamera) {
     // Create gui
     this.gui = gui.addFolder('transition pass');
-    this.gui.open();
+    this.gui.close();
     // Create scene
     this.scene = new Scene();
     this.camera = camera;

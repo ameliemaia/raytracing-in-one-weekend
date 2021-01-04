@@ -13,8 +13,8 @@ export const uniforms = {
   randomMap: { value: null },
   time: { value: 2 },
   sphere0Position: { value: new Vector3(0.0, 0.0, -1.0) },
-  sphere1Position: { value: new Vector3(0.0, -100.5, -1.0) },
-  sphere2Position: { value: new Vector3(1.0, 0.0, -1.0) }
+  sphere1Position: { value: new Vector3(1.0, 0.0, -1.0) },
+  sphere2Position: { value: new Vector3(-1.0, 0.0, -1.0) }
 };
 
 export const vertexShader = `
@@ -86,9 +86,9 @@ export const fragmentShader = `
 
     Sphere world[${WORLD_SIZE}];
     world[0] = Sphere(sphere0Position, 0.5, Material(LAMBERT, vec3(0.8, 0.3, 0.3)));
-    world[1] = Sphere(sphere1Position, 100.0, Material(LAMBERT, vec3(0.5)));
-    world[2] = Sphere(sphere2Position, 0.5, Material(METAL, vec3(0.8, 0.6, 0.2)));
-    world[3] = Sphere(vec3(-1.0, 0.0, -1.0), 0.5, Material(METAL, vec3(0.8, 0.8, 0.8)));
+    world[1] = Sphere(vec3(0.0, -100.5, -1.0), 100.0, Material(LAMBERT, vec3(0.5)));
+    world[2] = Sphere(sphere1Position, 0.5, Material(METAL, vec3(0.8, 0.6, 0.2)));
+    world[3] = Sphere(sphere2Position, 0.5, Material(METAL, vec3(0.8, 0.8, 0.8)));
 
     vec3 lowerLeftCorner = vec3(-screenSize, -screenSize*0.5, -1.0);
     vec3 horizontal = vec3(screenSize * 2.0, 0.0, 0.0); // screen space coords for scanning the scene
