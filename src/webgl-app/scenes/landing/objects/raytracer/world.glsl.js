@@ -1,11 +1,11 @@
-import { WORLD_SIZE, MAX_RECURSION } from './constants';
+import { WORLD_SIZE, MAX_BOUNCES } from './constants';
 
 export default `
   vec3 raytraceWorld(in Ray ray, Sphere world[${WORLD_SIZE}]) {
     HitRecord hitRecord;
     vec3 color = vec3(1);
 
-    for(int i = 0; i < ${MAX_RECURSION}; i++) {
+    for(int i = 0; i < ${MAX_BOUNCES}; i++) {
       Ray scatteredRay;
       if (hit(ray, 0.001, MAX_FLOAT, world, hitRecord)) {
           vec3 attenuation;

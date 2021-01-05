@@ -40,13 +40,14 @@ export const fragmentShader = `
   #define TWO_PI 6.283185307179586
   #define LAMBERT 0
   #define METAL 1
+  #define DIELECTRIC 2
 
   float rand(vec2 co){
     return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
   }
 
-  vec3 randomInSphere(){
-    vec2 uv = vec2(rand(vUv + seed.xy), rand(vUv + seed.xz));
+  vec3 randomInSphere(vec2 seed2){
+    vec2 uv = vec2(rand(vUv + seed.xy + seed2), rand(vUv + seed.xz + seed2));
     float theta = 2.0 * PI * uv.x;
     float phi = acos(2.0 * uv.y - 1.0);
     float radius = 1.0;
@@ -90,10 +91,11 @@ export const fragmentShader = `
     uv.y += 0.5;
 
     Sphere world[${WORLD_SIZE}];
-    world[0] = Sphere(sphere0Position, 0.5, Material(LAMBERT, vec4(0.8, 0.3, 0.3, 0.0)));
+    world[0] = Sphere(vec3(0.0, 0.0, -1.0), 0.5, Material(LAMBERT, vec4(0.8, 0.3, 0.3, 0.0)));
     world[1] = Sphere(vec3(0.0, -100.5, -1.0), 100.0, Material(LAMBERT, vec4(0.5, 0.5, 0.5, 0.0)));
-    world[2] = Sphere(sphere1Position, 0.5, Material(METAL, vec4(0.8, 0.6, 0.2, 1.0)));
-    world[3] = Sphere(sphere2Position, 0.5, Material(METAL, vec4(0.8, 0.8, 0.8, 0.3)));
+    world[2] = Sphere(vec3(1.0, 0.0, -1.0), 0.5, Material(METAL, vec4(0.8, 0.6, 0.2, 1.0)));
+    world[3] = Sphere(vec3(-1.0, 0.0, -1.0), 0.5, Material(DIELECTRIC, vec4(1.5)));
+    world[4] = Sphere(vec3(-1.0, 0.0, -1.0), -0.45, Material(DIELECTRIC, vec4(1.5)));
 
     vec3 lowerLeftCorner = vec3(-screenSize, -screenSize*0.5, -1.0);
     vec3 horizontal = vec3(screenSize * 2.0, 0.0, 0.0); // screen space coords for scanning the scene
