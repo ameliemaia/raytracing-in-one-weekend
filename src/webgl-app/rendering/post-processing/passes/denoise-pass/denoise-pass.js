@@ -36,7 +36,7 @@ export default class DenoisePass {
     this.mesh.updateMatrix();
     this.scene.add(this.mesh);
 
-    this.active = false;
+    this.active = true;
     this.passes = 0;
 
     this.gui.add(this, 'passes').listen();

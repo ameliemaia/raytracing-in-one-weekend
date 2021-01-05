@@ -22,9 +22,9 @@ export default `
 
   bool scatter(inout Ray ray, const in HitRecord hitRecord, out vec3 attenuation, out Ray scatteredRay) {
     if(hitRecord.material.type == METAL) {
-      attenuation = hitRecord.material.albedo.rgb;
+      attenuation = hitRecord.material.albedo;
       vec3 reflected = reflect(ray.direction, hitRecord.normal);
-      float fuzz = 1.0;//clamp(hitRecord.material.albedo.a, 0.0, 1.0);
+      float fuzz = clamp(hitRecord.material.value, 0.0, 1.0);
       scatteredRay = Ray(hitRecord.position, normalize(reflected + fuzz * randomInSphere(hitRecord.normal.xz)));
       return (dot(scatteredRay.direction, hitRecord.normal) > 0.0);
     } else if(hitRecord.material.type == DIELECTRIC) {
@@ -33,7 +33,7 @@ export default `
       vec3 reflected = reflect(ray.direction, hitRecord.normal);
       float niOverNt = 0.0;
 
-      float reflectionIndex = hitRecord.material.albedo.r;
+      float reflectionIndex = hitRecord.material.value;
 
       attenuation = vec3(1.0);
       vec3 refracted = vec3(0);
@@ -52,7 +52,7 @@ export default `
 
       if(refract(ray.direction, outwardNormal, niOverNt, refracted)) {
         scatteredRay = Ray(hitRecord.position, refracted);
-        reflectProbability = schlick(cosine, hitRecord.material.albedo.r);
+        reflectProbability = schlick(cosine, hitRecord.material.value);
       } else {
         scatteredRay = Ray(hitRecord.position, reflected);
         reflectProbability = 1.0;
@@ -67,7 +67,7 @@ export default `
       return true;
     } else {
       // lambert
-      attenuation = hitRecord.material.albedo.rgb;
+      attenuation = hitRecord.material.albedo;
       vec3 target = hitRecord.position + hitRecord.normal + randomInSphere(hitRecord.normal.xz);
       scatteredRay = Ray(hitRecord.position, normalize(target - hitRecord.position));
       return true;
