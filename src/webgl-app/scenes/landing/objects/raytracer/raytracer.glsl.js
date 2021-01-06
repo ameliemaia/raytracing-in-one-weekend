@@ -9,12 +9,16 @@ import { WORLD_SIZE } from './constants';
 
 export const uniforms = {
   resolution: { value: new Vector2() },
-  screenSize: { value: 2 },
+  fov: { value: 20 },
   seed: { value: new Vector4(Math.random(), Math.random(), Math.random(), Math.random()) },
-  time: { value: 2 },
+  time: { value: 0 },
+  cameraAspect: { value: 1 },
+  cameraPosition: { value: new Vector3() },
+  cameraTarget: { value: new Vector3() },
   sphere0Position: { value: new Vector3(0.0, 0.0, -1.0) },
   sphere1Position: { value: new Vector3(1.0, 0.0, -1.0) },
-  sphere2Position: { value: new Vector3(-1.0, 0.0, -1.0) }
+  sphere2Position: { value: new Vector3(-1.0, 0.0, -1.0) },
+  refractionIndex: { value: 1.5 }
 };
 
 export const vertexShader = `
@@ -29,7 +33,10 @@ export const fragmentShader = `
   uniform vec2 resolution;
   uniform float time;
   uniform vec4 seed;
-  uniform float screenSize;
+  uniform float fov;
+  uniform vec3 cameraTarget;
+  uniform float cameraAspect;
+  uniform float refractionIndex;
   uniform vec3 sphere0Position;
   uniform vec3 sphere1Position;
   uniform vec3 sphere2Position;
@@ -70,8 +77,8 @@ export const fragmentShader = `
     Material material;
   };
 
-  ${ray}
   ${camera}
+  ${ray}
   ${sphere}
   ${material}
   ${hitables}
@@ -92,15 +99,14 @@ export const fragmentShader = `
     uv.y += 0.5;
 
     Sphere world[${WORLD_SIZE}];
-    world[0] = Sphere(vec3(0.0, 0.0, -1.0), 0.5, Material(LAMBERT, vec3(0.1, 0.2, 0.5), 0.0));
-    world[1] = Sphere(vec3(0.0, -100.5, -1.0), 100.0, Material(LAMBERT, vec3(0.5), 0.0));
-    world[2] = Sphere(vec3(1.0, 0.0, -1.0), 0.5, Material(METAL, vec3(0.8, 0.6, 0.2), 1.0));
-    world[3] = Sphere(vec3(-1.0, 0.0, -1.0), 0.5, Material(DIELECTRIC, vec3(0), 1.5));
-    world[4] = Sphere(vec3(-1.0, 0.0, -1.0), -0.45, Material(DIELECTRIC, vec3(0), 1.5));
+    world[0] = Sphere(vec3(0.0, 0.0, 0.0), 0.5, Material(LAMBERT, vec3(0.1, 0.2, 0.5), 0.0));
+    world[1] = Sphere(vec3(0.0, -100.5, 0.0), 100.0, Material(LAMBERT, vec3(0.5), 0.0));
+    world[2] = Sphere(vec3(1.0, 0.0, 0.0), 0.5, Material(METAL, vec3(0.8, 0.6, 0.2), 0.0));
 
-    vec3 lowerLeftCorner = vec3(-screenSize, -screenSize*0.5, -1.0);
-    vec3 horizontal = vec3(screenSize * 2.0, 0.0, 0.0); // screen space coords for scanning the scene
-    vec3 vertical = vec3(0.0, screenSize, 0.0); // -2, -2, 2, 2
+    world[3] = Sphere(vec3(-1.0, 0.0, 0.0), 0.5, Material(DIELECTRIC, vec3(0), 1.5));
+    world[4] = Sphere(vec3(-1.0, 0.0, 0.0), -0.45, Material(DIELECTRIC, vec3(0), 1.5));
+
+
 
     // Anti aliasing
     // const int ns = 20;
@@ -124,14 +130,12 @@ export const fragmentShader = `
     // col /= float(ns);
     // vec3 outgoingColor = col;
 
-    Ray ray = getRay(uv.x, uv.y, lowerLeftCorner, horizontal, vertical);
+    Camera camera = createCamera(cameraPosition,
+                                 cameraTarget,
+                                 vec3(0.0, 1.0, 0.0),
+                                 2.0);
 
-    Camera camera = Camera(
-      lowerLeftCorner,
-      horizontal,
-      vertical,
-      ray
-    );
+    Ray ray = getRay(uv.x, uv.y, camera);
 
     vec3 outgoingColor = raytraceWorld(ray, world);
 

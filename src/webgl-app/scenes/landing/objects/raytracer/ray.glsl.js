@@ -4,8 +4,8 @@ export default `
     vec3 direction;
   };
 
-  Ray getRay(float u, float v, vec3 lowerLeftCorner, vec3 horizontal, vec3 vertical) {
-    return Ray(vec3(0), lowerLeftCorner + u * horizontal + v * vertical);
+  Ray getRay(float u, float v, Camera camera) {
+    return Ray(camera.origin, camera.lowerLeftCorner + u * camera.horizontal + v * camera.vertical - camera.origin);
   }
 
   vec3 pointAtParameter(float t, Ray ray) {
