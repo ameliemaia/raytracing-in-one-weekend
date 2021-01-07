@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/raytracing/static/css/main.53e688f1.chunk.css",
+    "main.js": "/raytracing/static/js/main.02ec10d1.chunk.js",
+    "main.js.map": "/raytracing/static/js/main.02ec10d1.chunk.js.map",
+    "runtime-main.js": "/raytracing/static/js/runtime-main.8af8b264.js",
+    "runtime-main.js.map": "/raytracing/static/js/runtime-main.8af8b264.js.map",
+    "static/js/2.7c2edba2.chunk.js": "/raytracing/static/js/2.7c2edba2.chunk.js",
+    "static/js/2.7c2edba2.chunk.js.map": "/raytracing/static/js/2.7c2edba2.chunk.js.map",
+    "index.html": "/raytracing/index.html",
+    "precache-manifest.0fefb242fd6e52e464abe03c9d55ac3f.js": "/raytracing/precache-manifest.0fefb242fd6e52e464abe03c9d55ac3f.js",
+    "service-worker.js": "/raytracing/service-worker.js",
+    "static/css/main.53e688f1.chunk.css.map": "/raytracing/static/css/main.53e688f1.chunk.css.map",
+    "static/js/2.7c2edba2.chunk.js.LICENSE.txt": "/raytracing/static/js/2.7c2edba2.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.8af8b264.js",
+    "static/js/2.7c2edba2.chunk.js",
+    "static/css/main.53e688f1.chunk.css",
+    "static/js/main.02ec10d1.chunk.js"
+  ]
+}
