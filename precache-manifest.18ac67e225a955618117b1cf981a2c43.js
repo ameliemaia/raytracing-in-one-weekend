@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "08b981c1344c56c1ad1dc1e529280d68",
+    "revision": "7da7208bdeede7a0a8fbabba0add3b1b",
     "url": "/raytracing-in-one-weekend/index.html"
   },
   {
