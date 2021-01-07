@@ -5,8 +5,8 @@
   "keywords": [
     "webgl",
     "threejs",
-    "raytracing",
-\  ],
+    "raytracing"
+  ],
   "private": true,
   "author": {
     "name": "Amelie Maia Rosser",
@@ -31,7 +31,7 @@
     "js-lint": "eslint './src/**/*.js' -c ./.eslintrc.json --quiet --ignore-pattern .gitignore",
     "flow": "flow",
     "flow-typed": "flow-typed install",
-    "linters": "npm-run-all flow js-lint",
+    "linters": "#npm-run-all flow js-lint",
     "assets": "node scripts/assets/optimise",
     "postinstall": "npm run flow-typed"
   },
