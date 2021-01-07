@@ -1,36 +1,25 @@
 {
-  "name": "webgl-react-app",
+  "name": "raytracing-in-one-weekend",
   "version": "0.2.0",
-  "description": "Jam3's WebGL React App Boilerplate",
+  "description": "Ray Tracing in One Weekend",
   "keywords": [
     "webgl",
     "threejs",
-    "best practices",
-    "create react app"
-  ],
+    "raytracing",
+\  ],
   "private": true,
   "author": {
     "name": "Amelie Maia Rosser",
     "email": "amelierosser1986@gmail.com",
-    "url": "http://ixviii.io/"
+    "url": "http://ameliemaia.art/"
   },
-  "contributors": [
-    {
-      "name": "Iran Reyes",
-      "email": "iran.reyes@jam3.com"
-    },
-    {
-      "name": "Peter Altamirano",
-      "email": "peter.altamirano@jam3.com"
-    }
-  ],
-  "homepage": "https://jam3.github.io/webgl-react-app/",
+  "homepage": "https://ameliemaia.github.io/raytracing-in-one-weekend/",
   "bugs": {
-    "url": "https://github.com/Jam3/webgl-react-app/issues"
+    "url": "https://github.com/ameliemaia/raytracing-in-one-weekend/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Jam3/webgl-react-app.git"
+    "url": "git+https://github.com/ameliemaia/raytracing-in-one-weekend.git"
   },
   "license": "MIT",
   "scripts": {
@@ -51,8 +40,8 @@
     "npm": ">=6.13.6"
   },
   "dependencies": {
-    "@jam3/detect": "^1.0.2",
-    "@jam3/stats": "^1.0.1",
+    "@ameliemaia/detect": "^1.0.2",
+    "@ameliemaia/stats": "^1.0.1",
     "dat.gui": "^0.7.7",
     "detect-gpu": "^1.2.0",
     "env-cmd": "^10.1.0",
@@ -70,8 +59,8 @@
     "@commitlint/cli": "^8.3.5",
     "audit-ci": "^2.5.1",
     "eslint-config-prettier": "^6.11.0",
-    "eslint-config-react-jam3": "^1.1.0",
-    "eslint-plugin-jam3": "^0.2.3",
+    "eslint-config-react-ameliemaia": "^1.1.0",
+    "eslint-plugin-ameliemaia": "^0.2.3",
     "eslint-plugin-prettier": "^3.1.3",
     "eslint-plugin-promise": "^4.2.1",
     "fbx2gltf": "^0.9.7-p1",
