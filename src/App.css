@@ -1,3 +1,17 @@
 .App canvas {
   outline: none;
 }
+
+.About {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 1rem;
+  color: white;
+  /* width: 15rem; */
+  line-height: 1.5;
+}
+
+a {
+  color: rgba(255, 255, 255, 0.5);
+  text-decoration: none;
+}

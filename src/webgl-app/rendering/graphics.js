@@ -55,7 +55,7 @@ export default {
   },
   [GRAPHICS_NORMAL]: {
     antialias: false,
-    pixelRatio: math.clamp(window.devicePixelRatio, 1, 2),
+    pixelRatio: 1,
     maxFrameBufferSize: new Vector2(1280, 720)
   }
 };

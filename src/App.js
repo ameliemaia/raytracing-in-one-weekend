@@ -76,7 +76,25 @@ class App extends React.PureComponent<Props, State> {
         ref={(node: HTMLElement | null) => {
           this.container = node;
         }}
-      ></div>
+      >
+        <div className="About">
+          <p>
+            A simple{' '}
+            <a href="https://github.com/ameliemaia/raytracing-in-one-weekend" target="_blank" rel="noopener noreferrer">
+              Raytracer
+            </a>{' '}
+            based on <br />
+            <a href="https://raytracing.github.io/" target="_blank" rel="noopener noreferrer">
+              Ray Tracing in One Weekend
+            </a>{' '}
+            <br />
+            by{' '}
+            <a href="https://twitter.com/Peter_shirley" target="_blank" rel="noopener noreferrer">
+              Peter Shirley
+            </a>
+          </p>
+        </div>
+      </div>
     );
   }
 }

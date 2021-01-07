@@ -8,21 +8,33 @@ export default class Raytracer {
     this.gui = gui.addFolder('raytracer');
     this.gui.open();
 
-    this.material = new ShaderMaterial({
-      uniforms,
-      vertexShader,
-      fragmentShader
-    });
-    this.mesh = new Mesh(new PlaneBufferGeometry(2, 2), this.material);
+    this.maxBounces = 50;
+
+    this.mesh = new Mesh(new PlaneBufferGeometry(2, 2), this.createMaterial());
     this.gui
       .add(this.mesh.material.uniforms.fov, 'value', 1, 100)
       .name('fov')
       .onChange(this.onChange);
 
+    this.gui.add(this, 'maxBounces', 1, 200, 1).onChange(this.rebuild);
+
     // this.addControl(0);
     // this.addControl(1);
     // this.addControl(2);
   }
+
+  createMaterial = () => {
+    return new ShaderMaterial({
+      uniforms,
+      vertexShader,
+      fragmentShader: fragmentShader(this.maxBounces)
+    });
+  };
+
+  rebuild = () => {
+    this.mesh.material = this.createMaterial();
+    this.onChange();
+  };
 
   onChange = () => {
     postProcessing.denoisePass.reset();

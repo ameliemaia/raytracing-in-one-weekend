@@ -42,6 +42,8 @@ export function setRendererSize(renderer: WebGLRenderer, windowWidth: number, wi
   if (settings.renderBufferFullscreen) {
     width = windowWidth;
     height = windowHeight;
+
+    console.log(width, height);
   }
 
   if (screenshot) {

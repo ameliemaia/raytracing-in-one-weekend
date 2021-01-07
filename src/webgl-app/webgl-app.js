@@ -95,6 +95,14 @@ class WebGLApp extends EventEmitter {
     //     setQuery('sceneId', value);
     //   })
     //   .listen();
+
+    guiSettings
+      .add(settings, 'renderBufferFullscreen')
+      .name('max resolution')
+      .onChange((value: boolean) => {
+        setQuery('hd', value);
+        this.resize(window.innerWidth, window.innerHeight);
+      });
   }
 
   captureScreenshot = () => {

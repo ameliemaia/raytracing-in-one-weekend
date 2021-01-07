@@ -30,7 +30,7 @@ settings.guiPrecision = 0.001;
 settings.viewportPreviewScale = 0.25;
 
 // Unlock full render size (should be false for prod)
-settings.renderBufferFullscreen = getQueryFromParams('hd') === null || false;
+settings.renderBufferFullscreen = getQueryFromParams('hd') === 'true' || false;
 
 settings.postProcessing = true;
 
