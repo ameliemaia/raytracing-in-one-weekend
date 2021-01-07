@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "/raytracing/static/css/main.53e688f1.chunk.css",
-    "main.js": "/raytracing/static/js/main.02ec10d1.chunk.js",
-    "main.js.map": "/raytracing/static/js/main.02ec10d1.chunk.js.map",
-    "runtime-main.js": "/raytracing/static/js/runtime-main.8af8b264.js",
-    "runtime-main.js.map": "/raytracing/static/js/runtime-main.8af8b264.js.map",
-    "static/js/2.7c2edba2.chunk.js": "/raytracing/static/js/2.7c2edba2.chunk.js",
-    "static/js/2.7c2edba2.chunk.js.map": "/raytracing/static/js/2.7c2edba2.chunk.js.map",
-    "index.html": "/raytracing/index.html",
-    "precache-manifest.0fefb242fd6e52e464abe03c9d55ac3f.js": "/raytracing/precache-manifest.0fefb242fd6e52e464abe03c9d55ac3f.js",
-    "service-worker.js": "/raytracing/service-worker.js",
-    "static/css/main.53e688f1.chunk.css.map": "/raytracing/static/css/main.53e688f1.chunk.css.map",
-    "static/js/2.7c2edba2.chunk.js.LICENSE.txt": "/raytracing/static/js/2.7c2edba2.chunk.js.LICENSE.txt"
+    "main.css": "/raytracing-in-one-weekend/static/css/main.53e688f1.chunk.css",
+    "main.js": "/raytracing-in-one-weekend/static/js/main.46152b1b.chunk.js",
+    "main.js.map": "/raytracing-in-one-weekend/static/js/main.46152b1b.chunk.js.map",
+    "runtime-main.js": "/raytracing-in-one-weekend/static/js/runtime-main.ba772929.js",
+    "runtime-main.js.map": "/raytracing-in-one-weekend/static/js/runtime-main.ba772929.js.map",
+    "static/js/2.7c2edba2.chunk.js": "/raytracing-in-one-weekend/static/js/2.7c2edba2.chunk.js",
+    "static/js/2.7c2edba2.chunk.js.map": "/raytracing-in-one-weekend/static/js/2.7c2edba2.chunk.js.map",
+    "index.html": "/raytracing-in-one-weekend/index.html",
+    "precache-manifest.9a761755a8906304774cd2e633634722.js": "/raytracing-in-one-weekend/precache-manifest.9a761755a8906304774cd2e633634722.js",
+    "service-worker.js": "/raytracing-in-one-weekend/service-worker.js",
+    "static/css/main.53e688f1.chunk.css.map": "/raytracing-in-one-weekend/static/css/main.53e688f1.chunk.css.map",
+    "static/js/2.7c2edba2.chunk.js.LICENSE.txt": "/raytracing-in-one-weekend/static/js/2.7c2edba2.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.8af8b264.js",
+    "static/js/runtime-main.ba772929.js",
     "static/js/2.7c2edba2.chunk.js",
     "static/css/main.53e688f1.chunk.css",
-    "static/js/main.02ec10d1.chunk.js"
+    "static/js/main.46152b1b.chunk.js"
   ]
 }
