@@ -10,6 +10,7 @@ import renderer from '../renderer';
 import BaseScene from '../../scenes/base/base-scene';
 import CopyPass from './passes/copy-pass/copy-pass';
 import DenoisePass from './passes/denoise-pass/denoise-pass';
+import { MAIN_SCENE_ID } from '../../scenes/main/main-scene';
 
 export default class PostProcessing {
   gui: GUI;
@@ -46,6 +47,12 @@ export default class PostProcessing {
     this.finalPass = new FinalPass(this.gui, geometry, this.camera);
     this.denoisePass = new DenoisePass(this.gui, geometry, this.camera);
     this.copyPass = new CopyPass(this.gui, geometry, this.camera);
+
+    this.transitionPass.on('complete', () => {
+      if (this.sceneB.id === MAIN_SCENE_ID) {
+        this.denoisePass.active = true;
+      }
+    });
 
     // Create empty scenes
     const sceneA = new EmptyScene('post scene a', 0x000000);
@@ -98,6 +105,11 @@ export default class PostProcessing {
    * @memberof PostProcessing
    */
   render(delta: number) {
+    // Stop rendering past x many passes
+    if (this.denoisePass.pauseRendering()) {
+      return;
+    }
+
     // Determine the current scene based on the transition pass value
     this.currentScene = this.transitionPass.mesh.material.uniforms.transition.value === 0 ? this.sceneA : this.sceneB;
     this.lastPass = this.currentScene;
@@ -125,7 +137,8 @@ export default class PostProcessing {
         this.lastPass,
         this.renderTargetDenoise,
         this.renderTargetDenoisePrev,
-        this.renderTargetDenoiseCombined
+        this.renderTargetDenoiseCombined,
+        this.transitionPass.active
       );
       // Copy combined result to prev textuer
       this.copyPass.render(this.renderTargetDenoisePrev, this.renderTargetDenoiseCombined);

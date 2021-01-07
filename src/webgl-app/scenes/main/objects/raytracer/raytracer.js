@@ -19,9 +19,9 @@ export default class Raytracer {
       .name('fov')
       .onChange(this.onChange);
 
-    this.addControl(0);
-    this.addControl(1);
-    this.addControl(2);
+    // this.addControl(0);
+    // this.addControl(1);
+    // this.addControl(2);
   }
 
   onChange = () => {

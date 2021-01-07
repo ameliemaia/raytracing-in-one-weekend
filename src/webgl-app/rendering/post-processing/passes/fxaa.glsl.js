@@ -2,7 +2,7 @@ import { Vector2, Material } from 'three';
 import { GUI } from 'dat.gui';
 
 export const uniforms = {
-  fxaaEnabled: { value: 0 },
+  fxaaEnabled: { value: 1 },
   fxaaResolution: { value: new Vector2(1 / 1024, 1 / 512) }
 };
 

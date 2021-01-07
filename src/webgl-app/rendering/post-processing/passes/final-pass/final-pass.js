@@ -12,7 +12,6 @@ import {
 import { GUI } from 'dat.gui';
 import { vertexShader, fragmentShader } from './shader.glsl';
 import { getRenderBufferSize } from '../../../resize';
-import { uniforms as filmUniforms, guiControls as filmGuiControls } from '../../passes/film.glsl';
 import { uniforms as fxaaUniforms, guiControls as fxaaGuiControls } from '../../passes/fxaa.glsl';
 import renderer from '../../../renderer';
 
@@ -52,8 +51,7 @@ export default class FinalPass {
             value: new Vector2(width, height)
           }
         },
-        fxaaUniforms,
-        filmUniforms
+        fxaaUniforms
       ]),
       vertexShader,
       fragmentShader
@@ -61,7 +59,6 @@ export default class FinalPass {
 
     // Add gui controls
     fxaaGuiControls(this.gui, material);
-    filmGuiControls(this.gui, material);
 
     // Create the mesh and turn off matrixAutoUpdate
     this.mesh = new Mesh(geometry, material);

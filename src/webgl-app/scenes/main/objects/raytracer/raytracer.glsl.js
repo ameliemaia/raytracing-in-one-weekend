@@ -106,8 +106,6 @@ export const fragmentShader = `
     world[3] = Sphere(vec3(-1.0, 0.0, 0.0), 0.5, Material(DIELECTRIC, vec3(0), 1.5));
     world[4] = Sphere(vec3(-1.0, 0.0, 0.0), -0.45, Material(DIELECTRIC, vec3(0), 1.5));
 
-
-
     // Anti aliasing
     // const int ns = 20;
     // vec3 col = vec3(0);

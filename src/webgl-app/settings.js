@@ -1,4 +1,4 @@
-// import { getQueryFromParams } from './utils/query-params';
+import { getQueryFromParams } from './utils/query-params';
 
 const settings = {};
 
@@ -21,7 +21,7 @@ settings.helpers = false; //getQueryFromParams('helpers') === 'true';
 settings.datGui = true; //getQueryFromParams('gui') === null;
 
 // Skips all transitions
-settings.skipTransitions = true; //getQueryFromParams('skipTransitions') === null;
+settings.skipTransitions = false; //getQueryFromParams('skipTransitions') === null;
 
 // GUI Number precision
 settings.guiPrecision = 0.001;
@@ -30,8 +30,8 @@ settings.guiPrecision = 0.001;
 settings.viewportPreviewScale = 0.25;
 
 // Unlock full render size (should be false for prod)
-settings.renderBufferFullscreen = false;
+settings.renderBufferFullscreen = getQueryFromParams('hd') === null || false;
 
-settings.postProcessing = false;
+settings.postProcessing = true;
 
 export default settings;

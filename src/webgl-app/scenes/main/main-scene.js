@@ -4,12 +4,12 @@ import assets from './assets';
 import Raytracer from './objects/raytracer/raytracer';
 import { postProcessing } from '../../rendering/renderer';
 
-export const LANDING_SCENE_ID = 'landing';
+export const MAIN_SCENE_ID = 'main';
 
-export default class LandingScene extends BaseScene {
+export default class MainScene extends BaseScene {
   constructor() {
-    super({ id: LANDING_SCENE_ID, assets, gui: true, guiOpen: true, controls: true });
-    this.cameras.main.position.set(1, 1, 1);
+    super({ id: MAIN_SCENE_ID, assets, gui: true, guiOpen: true, controls: true });
+    this.cameras.main.position.set(5, 5, 5);
     this.cameras.main.lookAt(VECTOR_ZERO);
   }
 

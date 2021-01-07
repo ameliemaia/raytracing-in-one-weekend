@@ -6,6 +6,7 @@ import { getRenderBufferSize } from '../../../resize';
 import renderer from '../../../renderer';
 import BaseScene from '../../../../scenes/base/base-scene';
 import settings from '../../../../settings';
+import EventEmitter from 'eventemitter3';
 const animate = require('gsap-promisify')(Promise, TweenLite);
 
 /**
@@ -14,7 +15,7 @@ const animate = require('gsap-promisify')(Promise, TweenLite);
  * @export
  * @class TransitionPass
  */
-export default class TransitionPass {
+export default class TransitionPass extends EventEmitter {
   gui: GUI;
   scene: Scene;
   camera: OrthographicCamera;
@@ -22,6 +23,7 @@ export default class TransitionPass {
   mesh: Mesh;
 
   constructor(gui: GUI, geometry: BufferGeometry, camera: OrthographicCamera) {
+    super();
     // Create gui
     this.gui = gui.addFolder('transition pass');
     this.gui.close();
@@ -84,6 +86,7 @@ export default class TransitionPass {
         })
         .then(() => {
           this.active = false;
+          this.emit('complete');
         });
     }
   }
@@ -95,10 +98,10 @@ export default class TransitionPass {
    * @param {Number} height
    * @memberof TransitionPass
    */
-  resize(width: number, height: number) {
+  resize = (width: number, height: number) => {
     this.mesh.material.uniforms.resolution.value.x = width;
     this.mesh.material.uniforms.resolution.value.y = height;
-  }
+  };
 
   /**
    * Render both scenes to renderTargetA and renderTargetB
@@ -110,13 +113,13 @@ export default class TransitionPass {
    * @param {Number} delta
    * @memberof TransitionPass
    */
-  render(
+  render = (
     sceneA: BaseScene,
     sceneB: BaseScene,
     renderTargetA: WebGLRenderTarget,
     renderTargetB: WebGLRenderTarget,
     delta: number
-  ) {
+  ) => {
     sceneA.update(delta);
     sceneB.update(delta);
     renderer.setClearColor(sceneA.clearColor);
@@ -128,5 +131,5 @@ export default class TransitionPass {
     this.mesh.material.uniforms.texture0.value = renderTargetA.texture;
     this.mesh.material.uniforms.texture1.value = renderTargetB.texture;
     renderer.setRenderTarget(null);
-  }
+  };
 }

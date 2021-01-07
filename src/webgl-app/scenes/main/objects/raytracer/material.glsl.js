@@ -1,14 +1,14 @@
 export default `
 
-  vec3 ref(vec3 position, vec3 normal) {
-    return position - 2.0 * dot(position, normal) * normal;
+  vec3 ref(vec3 direction, vec3 normal) {
+    return direction - 2.0 * dot(direction, normal) * normal;
   }
 
-  bool refract(const in vec3 position, const in vec3 normal, const in float niOverNt, out vec3 refracted) {
-    float dt = dot(position, normal);
+  bool refract(const in vec3 direction, const in vec3 normal, const in float niOverNt, out vec3 refracted) {
+    float dt = dot(direction, normal);
     float discriminant = 1.0 - niOverNt * niOverNt * (1.0 - dt * dt);
     if (discriminant > 0.0) {
-      refracted = niOverNt * (position - normal * dt) - normal * sqrt(discriminant);
+      refracted = niOverNt * (direction - normal * dt) - normal * sqrt(discriminant);
       return true;
     }
     return false;

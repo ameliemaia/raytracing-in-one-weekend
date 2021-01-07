@@ -8,7 +8,7 @@ export default `
   };
 
   Camera createCamera(vec3 origin, vec3 lookat, vec3 up, float aspect) {
-    float theta = fov * (3.14159265359 / 180.0);
+    float theta = fov * (PI / 180.0);
     float halfHeight = tan(theta / 2.0);
     float halfWidth = aspect * halfHeight;
 

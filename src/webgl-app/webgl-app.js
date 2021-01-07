@@ -8,7 +8,7 @@ import { setQuery, getQueryFromParams } from './utils/query-params';
 import { gui } from './utils/gui';
 import PreloaderScene, { PRELOADER_SCENE_ID } from './scenes/preloader/preloader-scene';
 import AppState from './app-state';
-import LandingScene, { LANDING_SCENE_ID } from './scenes/landing/landing-scene';
+import MainScene, { MAIN_SCENE_ID } from './scenes/main/main-scene';
 import Screenshot from './utils/screenshot';
 
 class WebGLApp extends EventEmitter {
@@ -40,13 +40,13 @@ class WebGLApp extends EventEmitter {
     // Scenes map
     this.scenes = {
       [PRELOADER_SCENE_ID]: PreloaderScene,
-      [LANDING_SCENE_ID]: LandingScene
+      [MAIN_SCENE_ID]: MainScene
     };
     // List of ids to switch between
-    const sceneIds = [LANDING_SCENE_ID];
+    const sceneIds = [MAIN_SCENE_ID];
 
     // The target scene id
-    this.sceneId = LANDING_SCENE_ID;
+    this.sceneId = MAIN_SCENE_ID;
     if (sceneIds.includes(getQueryFromParams('sceneId'))) {
       this.sceneId = getQueryFromParams('sceneId');
     }
@@ -70,11 +70,11 @@ class WebGLApp extends EventEmitter {
     guiSettings.open();
 
     // Toggle between dev and scene camera
-    guiSettings.add(settings, 'devCamera').onChange((value: string) => {
-      setQuery('devCamera', value);
-      postProcessing.resize();
-      this.currentScene.toogleCameras(value);
-    });
+    // guiSettings.add(settings, 'devCamera').onChange((value: string) => {
+    //   setQuery('devCamera', value);
+    //   postProcessing.resize();
+    //   this.currentScene.toogleCameras(value);
+    // });
 
     // Toggle between dev and scene camera
     guiSettings.add(settings, 'postProcessing').onChange((value: string) => {
@@ -82,19 +82,19 @@ class WebGLApp extends EventEmitter {
     });
 
     // Toggle scene helpers
-    guiSettings.add(settings, 'helpers').onChange((value: string) => {
-      setQuery('helpers', value);
-      this.currentScene.toggleHelpers(value);
-    });
+    // guiSettings.add(settings, 'helpers').onChange((value: string) => {
+    //   setQuery('helpers', value);
+    //   this.currentScene.toggleHelpers(value);
+    // });
 
     // Toggle between scenes
-    guiSettings
-      .add(this, 'sceneId', sceneIds)
-      .onChange((value: string) => {
-        this.setScene(value);
-        setQuery('sceneId', value);
-      })
-      .listen();
+    // guiSettings
+    //   .add(this, 'sceneId', sceneIds)
+    //   .onChange((value: string) => {
+    //     this.setScene(value);
+    //     setQuery('sceneId', value);
+    //   })
+    //   .listen();
   }
 
   captureScreenshot = () => {
