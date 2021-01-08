@@ -1,5 +1,4 @@
 import { Vector2, Vector3, Vector4 } from 'three';
-import ray from './ray.glsl';
 import camera from './camera.glsl';
 import sphere from './sphere.glsl';
 import hitables from './hitables.glsl';
@@ -13,6 +12,7 @@ export const uniforms = {
   seed: { value: new Vector4(Math.random(), Math.random(), Math.random(), Math.random()) },
   time: { value: 0 },
   cameraAspect: { value: 1 },
+  cameraAperture: { value: 2 },
   cameraPosition: { value: new Vector3() },
   cameraTarget: { value: new Vector3() },
   sphere0Position: { value: new Vector3(0.0, 0.0, -1.0) },
@@ -38,6 +38,7 @@ export const fragmentShader = (maxBounces: number = 50) => {
     uniform vec3 cameraTarget;
     uniform float cameraAspect;
     uniform float refractionIndex;
+    uniform float cameraAperture;
     uniform vec3 sphere0Position;
     uniform vec3 sphere1Position;
     uniform vec3 sphere2Position;
@@ -79,7 +80,6 @@ export const fragmentShader = (maxBounces: number = 50) => {
     };
 
     ${camera}
-    ${ray}
     ${sphere}
     ${material}
     ${hitables}
@@ -100,11 +100,11 @@ export const fragmentShader = (maxBounces: number = 50) => {
       uv.y += 0.5;
 
       Sphere world[${WORLD_SIZE}];
-      world[0] = Sphere(vec3(0.0, 0.0, 0.0), 0.5, Material(LAMBERT, vec3(0.1, 0.2, 0.5), 0.0));
+      world[0] = Sphere(vec3(0.0, 0.0, -1.0), 0.5, Material(LAMBERT, vec3(0.1, 0.2, 0.5), 0.0));
       world[1] = Sphere(vec3(0.0, -100.5, 0.0), 100.0, Material(LAMBERT, vec3(0.5), 0.0));
-      world[2] = Sphere(vec3(1.0, 0.0, 0.0), 0.5, Material(METAL, vec3(0.8, 0.6, 0.2), 0.0));
-      world[3] = Sphere(vec3(-1.0, 0.0, 0.0), 0.5, Material(DIELECTRIC, vec3(0), 1.5));
-      world[4] = Sphere(vec3(-1.0, 0.0, 0.0), -0.45, Material(DIELECTRIC, vec3(0), 1.5));
+      world[2] = Sphere(vec3(1.0, 0.0, -1.0), 0.5, Material(METAL, vec3(0.8, 0.6, 0.2), 0.0));
+      world[3] = Sphere(vec3(-1.0, 0.0, -1.0), 0.5, Material(DIELECTRIC, vec3(0), 1.5));
+      world[4] = Sphere(vec3(-1.0, 0.0, -1.0), -0.45, Material(DIELECTRIC, vec3(0), 1.5));
 
       // Anti aliasing
       // const int ns = 20;
@@ -128,10 +128,14 @@ export const fragmentShader = (maxBounces: number = 50) => {
       // col /= float(ns);
       // vec3 outgoingColor = col;
 
+      float focusDistance = length(cameraPosition - cameraTarget);
+
       Camera camera = createCamera(cameraPosition,
                                   cameraTarget,
                                   vec3(0.0, 1.0, 0.0),
-                                  2.0);
+                                  2.0,
+                                  cameraAperture,
+                                  focusDistance);
 
       Ray ray = getRay(uv.x, uv.y, camera);
 

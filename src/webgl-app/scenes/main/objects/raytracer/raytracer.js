@@ -17,6 +17,10 @@ export default class Raytracer {
       .onChange(this.onChange);
 
     this.gui.add(this, 'maxBounces', 1, 200, 1).onChange(this.rebuild);
+    this.gui
+      .add(this.mesh.material.uniforms.cameraAperture, 'value', 0, 10)
+      .name('cameraAperture')
+      .onChange(this.onChange);
 
     // this.addControl(0);
     // this.addControl(1);

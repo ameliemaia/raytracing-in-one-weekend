@@ -106,5 +106,6 @@ export const gui = new Cls();
 export { GUIWrapper };
 
 if (!detect.device.isDesktop) {
-  Cls.toggleHide();
+  // Cls.toggleHide();
+  gui.close();
 }
