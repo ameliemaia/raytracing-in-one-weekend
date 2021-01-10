@@ -1,8 +1,6 @@
-import { WORLD_SIZE } from './constants';
-
-export default (maxBounces: number) => {
+export default (worldSize: number, maxBounces: number) => {
   return `
-    vec3 raytraceWorld(in Ray ray, Sphere world[${WORLD_SIZE}]) {
+    vec3 raytraceWorld(in Ray ray, Sphere world[${worldSize}]) {
     HitRecord hitRecord;
     vec3 color = vec3(1);
 

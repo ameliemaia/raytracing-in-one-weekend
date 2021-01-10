@@ -8,8 +8,8 @@ export const MAIN_SCENE_ID = 'main';
 export default class MainScene extends BaseScene {
   constructor() {
     super({ id: MAIN_SCENE_ID, assets, gui: true, guiOpen: true, controls: true });
-    this.cameras.main.position.set(3, 3, 2);
-    this.control.target.set(0, 0, -1);
+    this.cameras.main.position.set(13, 2, 3);
+    this.control.target.set(0, 0, 0);
     this.control.update();
   }
 
@@ -21,7 +21,7 @@ export default class MainScene extends BaseScene {
   async createSceneObjects() {
     await new Promise((resolve, reject) => {
       try {
-        this.raytracer = new Raytracer(this.gui);
+        this.raytracer = new Raytracer(this.gui, this.camera, this.control);
         this.scene.add(this.raytracer.mesh);
 
         this.control.addEventListener('change', () => {

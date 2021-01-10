@@ -11,7 +11,7 @@ import { Object3D, Scene } from 'three';
 export default function disposeObjects(object: Scene | Object3D, parent: Scene | Object3D) {
   if (object === null || object === undefined) return;
   if (parent) parent.remove(object);
-  if (object.dispose) {
+  if (object.dispose && object.type !== 'Scene') {
     object.dispose();
   }
   if (object.geometry) {
@@ -28,6 +28,5 @@ export default function disposeObjects(object: Scene | Object3D, parent: Scene |
       i++;
     }
   }
-  if (object.type === 'Scene') object.dispose();
   object = null;
 }

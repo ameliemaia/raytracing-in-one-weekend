@@ -7,7 +7,7 @@ import { gui, GUIWrapper } from '../../utils/gui';
 import Math3 from '../../utils/math';
 import settings from '../../settings';
 import { rendererSize } from '../../rendering/resize';
-import preloadGpu from '../../rendering/preload-gpu';
+// import preloadGpu from '../../rendering/preload-gpu';
 import assetLoader from '../../loading/asset-loader';
 import assetManager from '../../loading/asset-manager';
 import Asset from '../../loading/asset';
@@ -156,9 +156,9 @@ export default class BaseScene extends EventEmitter {
     await this.loadAssets();
     await this.createSceneHelpers();
     await this.createSceneObjects();
-    this.preloadGpuCullScene(true);
-    preloadGpu(this.scene, this.camera);
-    this.preloadGpuCullScene(false);
+    // this.preloadGpuCullScene(true);
+    // preloadGpu(this.scene, this.camera);
+    // this.preloadGpuCullScene(false);
   }
 
   /**

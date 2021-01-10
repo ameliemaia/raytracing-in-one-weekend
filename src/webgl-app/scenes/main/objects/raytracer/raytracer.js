@@ -1,64 +1,174 @@
-import { Mesh, PerspectiveCamera, PlaneBufferGeometry, ShaderMaterial } from 'three';
+import { MathUtils, Mesh, PerspectiveCamera, PlaneBufferGeometry, ShaderMaterial, Vector3 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { postProcessing } from '../../../../rendering/renderer';
 import { uniforms, vertexShader, fragmentShader } from './raytracer.glsl';
 
+const SCENE_FINAL = 'final';
+const SCENE_SIMPLE = 'simple';
+
 export default class Raytracer {
-  constructor(gui: GUI) {
+  constructor(gui: GUI, camera: PerspectiveCamera, control: OrbitControls) {
     this.gui = gui.addFolder('raytracer');
     this.gui.open();
 
+    this.camera = camera;
+    this.control = control;
+
+    const scenes = [SCENE_FINAL, SCENE_SIMPLE];
+
+    this.scene = scenes[0];
     this.maxBounces = 50;
+    this.cameraAutoFocus = uniforms.cameraAutoFocus.value === 1;
 
     this.mesh = new Mesh(new PlaneBufferGeometry(2, 2), this.createMaterial());
-    this.gui
+
+    this.gui.add(this, 'scene', scenes).onChange(this.rebuild);
+    this.gui.add(this, 'maxBounces', 1, 200, 1).onChange(this.rebuild);
+
+    const guiCamera = this.gui.addFolder('camera');
+    guiCamera.open();
+
+    guiCamera
       .add(this.mesh.material.uniforms.fov, 'value', 1, 100)
       .name('fov')
       .onChange(this.onChange);
-
-    this.gui.add(this, 'maxBounces', 1, 200, 1).onChange(this.rebuild);
-    this.gui
+    guiCamera
       .add(this.mesh.material.uniforms.cameraAperture, 'value', 0, 10)
-      .name('cameraAperture')
-      .onChange(this.onChange);
+      .name('aperture')
+      .onChange(this.onChange)
+      .listen();
+    guiCamera
+      .add(this.mesh.material.uniforms.cameraFocusDistance, 'value', 0, 100)
+      .name('focus dist')
+      .onChange(this.onChange)
+      .listen();
+    guiCamera
+      .add(this, 'cameraAutoFocus', 0, 1)
+      .name('auto focus')
+      .onChange(() => {
+        this.mesh.material.uniforms.cameraAutoFocus.value = this.cameraAutoFocus ? 1 : 0;
+        this.onChange();
+      })
+      .listen();
+  }
 
-    // this.addControl(0);
-    // this.addControl(1);
-    // this.addControl(2);
+  createSimpleScene() {
+    const scene = `
+    Sphere world[5];
+    world[0] = Sphere(vec3(0.0, 0.0, -1.0), 0.5, Material(LAMBERT, vec3(0.1, 0.2, 0.5), 0.0));
+    world[1] = Sphere(vec3(0.0, -100.5, 0.0), 100.0, Material(LAMBERT, vec3(0.5), 0.0));
+    world[2] = Sphere(vec3(1.0, 0.0, -1.0), 0.5, Material(METAL, vec3(0.8, 0.6, 0.2), 0.0));
+    world[3] = Sphere(vec3(-1.0, 0.0, -1.0), 0.5, Material(DIELECTRIC, vec3(0), 1.5));
+    world[4] = Sphere(vec3(-1.0, 0.0, -1.0), -0.45, Material(DIELECTRIC, vec3(0), 1.5));
+  `;
+    return { scene, size: 5 };
+  }
+
+  createFinalScene() {
+    const size = 144 + 4;
+    // const size = 15 * 15 + 4;
+
+    let scene = '';
+    const world = [];
+    world[0] = `Sphere(vec3(0.0, -1000.0, 0.0), 1000.0, Material(LAMBERT, vec3(0.5), 0.0))`;
+    world[1] = `Sphere(vec3(0.0, 1.0, 0.0), 1.0, Material(DIELECTRIC, vec3(0), 1.5))`;
+    world[2] = `Sphere(vec3(-4.0, 1.0, 0.0), 1.0, Material(LAMBERT, vec3(0.4, 0.2, 0.1), 0.0))`;
+    world[3] = `Sphere(vec3(4.0, 1.0, 0.0), 1.0, Material(METAL, vec3(0.7, 0.6, 0.5), 0.0))`;
+
+    const offset = new Vector3(4, 0.2, 0);
+    const total = size - world.length;
+    const grid = Math.floor(Math.sqrt(total));
+    let n = world.length;
+    const gridSize = 8;
+
+    for (let i = 0; i < total; i++) {
+      const chooseMat = Math.random();
+      const center = new Vector3(0, 0.2, 0);
+
+      const row = Math.floor(i / grid) / grid;
+      const col = (i % grid) / grid;
+
+      center.x = MathUtils.lerp(-gridSize, gridSize, row) + MathUtils.randFloat(0, 0.9);
+      center.z = MathUtils.lerp(-gridSize, gridSize, col) + MathUtils.randFloat(0, 0.9);
+
+      if (center.distanceTo(offset) > 0.9) {
+        if (chooseMat < 0.8) {
+          world[n++] = `Sphere(vec3(${center.x},${center.y},${center.z}), 0.2, Material(LAMBERT, vec3(${Math.random() *
+            Math.random()}, ${Math.random() * Math.random()}, ${Math.random() * Math.random()}), 0.0))`;
+        } else if (chooseMat < 0.95) {
+          world[n++] = `Sphere(vec3(${center.x},${center.y},${center.z}), 0.2, Material(METAL, vec3(${0.5 *
+            (Math.random() + 1)},${0.5 * (Math.random() + 1)}, ${0.5 * (Math.random() + 1)}), ${Math.random() * 0.5}))`;
+        } else {
+          world[n++] = `Sphere(vec3(${center.x},${center.y},${center.z}), 0.2, Material(DIELECTRIC, vec3(0), 1.5));`;
+        }
+      }
+    }
+
+    for (let i = 0; i < world.length; i++) {
+      scene += `world[${i}] = ${world[i]};\n`;
+    }
+
+    // Prefix
+    scene = `Sphere world[${world.length}];\n` + scene;
+
+    return { scene, size: world.length };
   }
 
   createMaterial = () => {
+    const data = this.getSceneShader();
     return new ShaderMaterial({
       uniforms,
       vertexShader,
-      fragmentShader: fragmentShader(this.maxBounces)
+      fragmentShader: fragmentShader(data.size, this.maxBounces, data.scene)
     });
   };
 
+  getSceneShader() {
+    switch (this.scene) {
+      case SCENE_FINAL:
+        return this.createFinalScene();
+      default:
+        return this.createSimpleScene();
+    }
+  }
+
   rebuild = () => {
     this.mesh.material = this.createMaterial();
+    switch (this.scene) {
+      case SCENE_FINAL:
+        this.camera.position.set(13, 2, 3);
+        this.control.target.set(0, 0, 0);
+        this.setAperture(0.1);
+        this.setFocusDistance(10);
+        this.setAutoFocus(false);
+        break;
+      default:
+        this.camera.position.set(3, 3, 2);
+        this.control.target.set(0, 0, -1);
+        this.setAperture(2);
+        this.setAutoFocus(true);
+        break;
+    }
+
     this.onChange();
   };
+
+  setAperture(value: number) {
+    this.mesh.material.uniforms.cameraAperture.value = value;
+  }
+
+  setAutoFocus(value: boolean) {
+    this.mesh.material.uniforms.cameraAutoFocus.value = value ? 1 : 0;
+    this.cameraAutoFocus = value;
+  }
+
+  setFocusDistance(value: boolean) {
+    this.mesh.material.uniforms.cameraFocusDistance.value = value;
+  }
 
   onChange = () => {
     postProcessing.denoisePass.reset();
   };
-
-  addControl(index: number) {
-    const guiFolder = this.gui.addFolder(`sphere${index}`);
-    guiFolder.open();
-    const range = 5;
-    guiFolder
-      .add(this.mesh.material.uniforms[`sphere${index}Position`].value, 'x', -range, range)
-      .onChange(this.onChange);
-    guiFolder
-      .add(this.mesh.material.uniforms[`sphere${index}Position`].value, 'y', -range, range)
-      .onChange(this.onChange);
-    guiFolder
-      .add(this.mesh.material.uniforms[`sphere${index}Position`].value, 'z', -range, range)
-      .onChange(this.onChange);
-    guiFolder.add(this.mesh.material.uniforms.refractionIndex, 'value', 0, 5).onChange(this.onChange);
-  }
 
   onChange = () => {
     postProcessing.denoisePass.reset();

@@ -40,8 +40,8 @@
     "npm": ">=6.13.6"
   },
   "dependencies": {
-    "@ameliemaia/detect": "^1.0.2",
-    "@ameliemaia/stats": "^1.0.1",
+    "@jam3/detect": "^1.0.2",
+    "@jam3/stats": "^1.0.1",
     "dat.gui": "^0.7.7",
     "detect-gpu": "^1.2.0",
     "env-cmd": "^10.1.0",
@@ -53,14 +53,14 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.0",
-    "three": "^0.113.2"
+    "three": "^0.124.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^8.3.5",
     "audit-ci": "^2.5.1",
     "eslint-config-prettier": "^6.11.0",
-    "eslint-config-react-ameliemaia": "^1.1.0",
-    "eslint-plugin-ameliemaia": "^0.2.3",
+    "eslint-config-react-jam3": "^1.1.0",
+    "eslint-plugin-jam3": "^0.2.3",
     "eslint-plugin-prettier": "^3.1.3",
     "eslint-plugin-promise": "^4.2.1",
     "fbx2gltf": "^0.9.7-p1",
