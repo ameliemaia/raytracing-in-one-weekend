@@ -50,7 +50,7 @@ export function getTier(): string {
 export default {
   [GRAPHICS_HIGH]: {
     antialias: false, // Enable antialias if you're not using post processing
-    pixelRatio: 1, //math.clamp(window.devicePixelRatio, 1, 2),
+    pixelRatio: getQueryFromParams('hd') === 'true' ? math.clamp(window.devicePixelRatio, 1, 2) : 1,
     maxFrameBufferSize: new Vector2(1280, 720)
   },
   [GRAPHICS_NORMAL]: {

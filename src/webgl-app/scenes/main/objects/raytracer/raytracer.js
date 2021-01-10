@@ -17,13 +17,17 @@ export default class Raytracer {
     const scenes = [SCENE_FINAL, SCENE_SIMPLE];
 
     this.scene = scenes[0];
-    this.maxBounces = 50;
+    this.maxSpheres = 200;
+    this.maxBounces = 25;
+    this.gridSize = 11;
     this.cameraAutoFocus = uniforms.cameraAutoFocus.value === 1;
 
     this.mesh = new Mesh(new PlaneBufferGeometry(2, 2), this.createMaterial());
 
     this.gui.add(this, 'scene', scenes).onChange(this.rebuild);
     this.gui.add(this, 'maxBounces', 1, 200, 1).onChange(this.rebuild);
+    this.gui.add(this, 'maxSpheres', 1, 200, 1).onChange(this.rebuild);
+    this.gui.add(this, 'gridSize', 1, 11).onChange(this.rebuild);
 
     const guiCamera = this.gui.addFolder('camera');
     guiCamera.open();
@@ -65,8 +69,7 @@ export default class Raytracer {
   }
 
   createFinalScene() {
-    const size = 144 + 4;
-    // const size = 15 * 15 + 4;
+    const size = this.maxSpheres + 4;
 
     let scene = '';
     const world = [];
@@ -79,7 +82,6 @@ export default class Raytracer {
     const total = size - world.length;
     const grid = Math.floor(Math.sqrt(total));
     let n = world.length;
-    const gridSize = 8;
 
     for (let i = 0; i < total; i++) {
       const chooseMat = Math.random();
@@ -88,8 +90,8 @@ export default class Raytracer {
       const row = Math.floor(i / grid) / grid;
       const col = (i % grid) / grid;
 
-      center.x = MathUtils.lerp(-gridSize, gridSize, row) + MathUtils.randFloat(0, 0.9);
-      center.z = MathUtils.lerp(-gridSize, gridSize, col) + MathUtils.randFloat(0, 0.9);
+      center.x = MathUtils.lerp(-this.gridSize, this.gridSize, row) + MathUtils.randFloat(0, 0.9);
+      center.z = MathUtils.lerp(-this.gridSize, this.gridSize, col) + MathUtils.randFloat(0, 0.9);
 
       if (center.distanceTo(offset) > 0.9) {
         if (chooseMat < 0.8) {

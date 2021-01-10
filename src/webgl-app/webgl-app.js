@@ -1,5 +1,5 @@
 import EventEmitter from 'eventemitter3';
-import { Clock, Vector4, PerspectiveCamera } from 'three';
+import { Clock, Vector4, PerspectiveCamera, MathUtils } from 'three';
 import renderer, { postProcessing } from './rendering/renderer';
 import { setRendererSize, rendererSize } from './rendering/resize';
 import settings from './settings';
@@ -101,6 +101,8 @@ class WebGLApp extends EventEmitter {
       .name('max resolution')
       .onChange((value: boolean) => {
         setQuery('hd', value);
+        const maxRatio = MathUtils.clamp(window.devicePixelRatio, 1, 2);
+        renderer.setPixelRatio(value ? maxRatio : 1);
         this.resize(window.innerWidth, window.innerHeight);
       });
   }
