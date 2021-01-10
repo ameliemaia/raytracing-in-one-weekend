@@ -1,8 +1,24 @@
-import { Mesh, Scene, ShaderMaterial, Vector2, WebGLRenderTarget } from 'three';
+import { GUI } from 'dat.gui';
+import {
+  BufferGeometry,
+  Mesh,
+  OrthographicCamera,
+  PerspectiveCamera,
+  Scene,
+  ShaderMaterial,
+  Vector2,
+  WebGLRenderTarget
+} from 'three';
 import renderer from '../../../renderer';
 import { getRenderBufferSize } from '../../../resize';
 
 export default class CopyPass {
+  scene: Scene;
+
+  camera: PerspectiveCamera;
+
+  mesh: Mesh;
+
   constructor(gui: GUI, geometry: BufferGeometry, camera: OrthographicCamera) {
     this.scene = new Scene();
     this.camera = camera;

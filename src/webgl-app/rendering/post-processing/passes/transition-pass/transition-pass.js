@@ -1,12 +1,12 @@
 import { Scene, Mesh, ShaderMaterial, Vector2, BufferGeometry, OrthographicCamera, WebGLRenderTarget } from 'three';
 import { TweenLite } from 'gsap';
 import { GUI } from 'dat.gui';
+import EventEmitter from 'eventemitter3';
 import { vertexShader, fragmentShader } from './shader.glsl';
 import { getRenderBufferSize } from '../../../resize';
 import renderer from '../../../renderer';
 import BaseScene from '../../../../scenes/base/base-scene';
 import settings from '../../../../settings';
-import EventEmitter from 'eventemitter3';
 const animate = require('gsap-promisify')(Promise, TweenLite);
 
 /**

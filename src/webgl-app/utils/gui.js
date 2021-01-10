@@ -11,7 +11,7 @@ class Folder {
   listen() {
     return this;
   }
-  name() {
+  name(val: string) {
     return this;
   }
   open() {
@@ -62,7 +62,7 @@ class GUIWrapper {
   listen() {
     return this;
   }
-  name() {
+  name(val: string) {
     return this;
   }
   close() {

@@ -1,4 +1,5 @@
-import { MathUtils, Mesh, PerspectiveCamera, PlaneBufferGeometry, ShaderMaterial, Vector3 } from 'three';
+import { GUI } from 'dat.gui';
+import { MathUtils, Mesh, PerspectiveCamera, PlaneBufferGeometry, Scene, ShaderMaterial, Vector3 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { postProcessing } from '../../../../rendering/renderer';
 import { uniforms, vertexShader, fragmentShader } from './raytracer.glsl';
@@ -7,6 +8,24 @@ const SCENE_FINAL = 'final';
 const SCENE_SIMPLE = 'simple';
 
 export default class Raytracer {
+  gui: GUI;
+
+  camera: PerspectiveCamera;
+
+  control: OrbitControls;
+
+  scene: Scene;
+
+  mesh: Mesh;
+
+  maxSpheres: number = 200;
+
+  maxBounces: number = 50;
+
+  gridSize: number = 11;
+
+  cameraAutoFocus: boolean;
+
   constructor(gui: GUI, camera: PerspectiveCamera, control: OrbitControls) {
     this.gui = gui.addFolder('raytracer');
     this.gui.open();
@@ -17,9 +36,6 @@ export default class Raytracer {
     const scenes = [SCENE_FINAL, SCENE_SIMPLE];
 
     this.scene = scenes[0];
-    this.maxSpheres = 200;
-    this.maxBounces = 50;
-    this.gridSize = 11;
     this.cameraAutoFocus = uniforms.cameraAutoFocus.value === 1;
 
     this.mesh = new Mesh(new PlaneBufferGeometry(2, 2), this.createMaterial());
@@ -164,7 +180,7 @@ export default class Raytracer {
     this.cameraAutoFocus = value;
   }
 
-  setFocusDistance(value: boolean) {
+  setFocusDistance(value: number) {
     this.mesh.material.uniforms.cameraFocusDistance.value = value;
   }
 

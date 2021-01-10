@@ -21,7 +21,7 @@ export function getQueryFromParams(prop: string): mixed {
  * @param {boolean} [reload=false]
  * @returns
  */
-export function setQuery(query: string, val: string, reload: boolean = false) {
+export function setQuery(query: string, val: mixed, reload: boolean = false) {
   const queries = queryString.parse(window.location.search);
   const newQueries = Object.assign({}, queries, {
     [query]: val

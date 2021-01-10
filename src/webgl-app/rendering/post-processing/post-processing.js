@@ -15,13 +15,17 @@ import { MAIN_SCENE_ID } from '../../scenes/main/main-scene';
 export default class PostProcessing {
   gui: GUI;
   camera: OrthographicCamera;
-  renderTargetA: WebGLRenderTarget;
-  renderTargetB: WebGLRenderTarget;
-  renderTargetC: WebGLRenderTarget;
+  renderTargetTransitionA: WebGLRenderTarget;
+  renderTargetTransitionB: WebGLRenderTarget;
+  renderTargetDenoise: WebGLRenderTarget;
+  renderTargetDenoisePrev: WebGLRenderTarget;
+  renderTargetDenoiseCombined: WebGLRenderTarget;
   transitionPass: TransitionPass;
   finalPass: FinalPass;
   currentScene: BaseScene;
-  lastPass: mixed;
+  denoisePass: DenoisePass;
+  lastPass: BaseScene;
+  copyPass: CopyPass;
   sceneA: BaseScene;
   sceneB: BaseScene;
 
@@ -136,8 +140,7 @@ export default class PostProcessing {
         this.lastPass,
         this.renderTargetDenoise,
         this.renderTargetDenoisePrev,
-        this.renderTargetDenoiseCombined,
-        this.transitionPass.active
+        this.renderTargetDenoiseCombined
       );
       // Copy combined result to prev textuer
       this.copyPass.render(this.renderTargetDenoisePrev, this.renderTargetDenoiseCombined);

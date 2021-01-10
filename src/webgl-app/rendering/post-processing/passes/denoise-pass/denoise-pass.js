@@ -1,9 +1,34 @@
-import { Mesh, Scene, ShaderMaterial, Vector2, WebGLRenderTarget } from 'three';
+import { GUI } from 'dat.gui';
+import {
+  BufferGeometry,
+  Mesh,
+  OrthographicCamera,
+  PerspectiveCamera,
+  Scene,
+  ShaderMaterial,
+  Vector2,
+  WebGLRenderTarget
+} from 'three';
+import BaseScene from '../../../../scenes/base/base-scene';
 import renderer from '../../../renderer';
 import { getRenderBufferSize } from '../../../resize';
 import { vertexShader, fragmentShader } from './shader.glsl';
 
 export default class DenoisePass {
+  active: boolean = false;
+
+  passes: number = 0;
+
+  maxPasses: number = 2000;
+
+  scene: Scene;
+
+  camera: PerspectiveCamera;
+
+  mesh: Mesh;
+
+  gui: GUI;
+
   constructor(gui: GUI, geometry: BufferGeometry, camera: OrthographicCamera) {
     this.gui = gui.addFolder('denoise pass');
     this.gui.open();
@@ -33,10 +58,6 @@ export default class DenoisePass {
     this.mesh.matrixAutoUpdate = false;
     this.mesh.updateMatrix();
     this.scene.add(this.mesh);
-
-    this.active = false;
-    this.passes = 0;
-    this.maxPasses = 2000;
 
     this.gui.add(this, 'passes').listen();
     this.gui.add(this, 'maxPasses', 0, 20000);

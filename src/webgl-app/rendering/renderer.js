@@ -9,7 +9,7 @@ import createCanvas from '../utils/canvas';
 
 const { pixelRatio, antialias } = graphics[getGraphicsMode()];
 
-const options = {
+const options: any = {
   antialias,
   powerPreference: 'high-performance',
   stencil: false,

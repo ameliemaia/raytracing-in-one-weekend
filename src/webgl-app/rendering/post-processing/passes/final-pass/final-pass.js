@@ -14,6 +14,7 @@ import { vertexShader, fragmentShader } from './shader.glsl';
 import { getRenderBufferSize } from '../../../resize';
 import { uniforms as fxaaUniforms, guiControls as fxaaGuiControls } from '../../passes/fxaa.glsl';
 import renderer from '../../../renderer';
+import BaseScene from '../../../../scenes/base/base-scene';
 
 /**
  * The final pass contains the post fx and is then output to the screen
@@ -90,9 +91,6 @@ export default class FinalPass {
    * @memberof FinalPass
    */
   render(scene: BaseScene, renderTarget: WebGLRenderTarget, delta: number) {
-    // renderer.setRenderTarget(renderTarget);
-    // renderer.render(scene.scene, scene.camera);
-    // renderer.setRenderTarget(null);
     this.mesh.material.uniforms.tDiffuse.value = renderTarget.texture;
     this.mesh.material.uniforms.time.value += delta;
     renderer.render(this.scene, this.camera);
