@@ -18,15 +18,15 @@ export default class Raytracer {
 
     this.scene = scenes[0];
     this.maxSpheres = 200;
-    this.maxBounces = 25;
+    this.maxBounces = 50;
     this.gridSize = 11;
     this.cameraAutoFocus = uniforms.cameraAutoFocus.value === 1;
 
     this.mesh = new Mesh(new PlaneBufferGeometry(2, 2), this.createMaterial());
 
     this.gui.add(this, 'scene', scenes).onChange(this.rebuild);
-    this.gui.add(this, 'maxBounces', 1, 200, 1).onChange(this.rebuild);
-    this.gui.add(this, 'maxSpheres', 1, 200, 1).onChange(this.rebuild);
+    this.gui.add(this, 'maxBounces', 1, 100, 1).onChange(this.rebuild);
+    this.gui.add(this, 'maxSpheres', 1, 500, 1).onChange(this.rebuild);
     this.gui.add(this, 'gridSize', 1, 11).onChange(this.rebuild);
 
     const guiCamera = this.gui.addFolder('camera');
