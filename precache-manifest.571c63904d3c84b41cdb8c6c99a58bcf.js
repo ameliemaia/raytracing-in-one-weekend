@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "6173b2a01917e357dc974ce7cb6a4c1f",
+    "revision": "49632f5dfbb4e104611d737ce31da893",
     "url": "/raytracing-in-one-weekend/index.html"
   },
   {
-    "revision": "91ba0ce7a0d4567bd339",
+    "revision": "5dc93854980d6ae4c712",
     "url": "/raytracing-in-one-weekend/static/css/main.53e688f1.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/raytracing-in-one-weekend/static/js/2.2349fdc7.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "91ba0ce7a0d4567bd339",
-    "url": "/raytracing-in-one-weekend/static/js/main.d6823cb2.chunk.js"
+    "revision": "5dc93854980d6ae4c712",
+    "url": "/raytracing-in-one-weekend/static/js/main.3d95266e.chunk.js"
   },
   {
     "revision": "d65c06f9a17e21f0febf",
