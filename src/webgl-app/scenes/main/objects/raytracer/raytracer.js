@@ -1,6 +1,7 @@
 import { GUI } from 'dat.gui';
 import { MathUtils, Mesh, PerspectiveCamera, PlaneBufferGeometry, Scene, ShaderMaterial, Vector3 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { getGraphicsMode, GRAPHICS_HIGH } from '../../../../rendering/graphics';
 import { postProcessing } from '../../../../rendering/renderer';
 import { uniforms, vertexShader, fragmentShader } from './raytracer.glsl';
 
@@ -18,11 +19,11 @@ export default class Raytracer {
 
   mesh: Mesh;
 
-  maxSpheres: number = 200;
+  maxSpheres: number;
 
-  maxBounces: number = 50;
+  maxBounces: number;
 
-  gridSize: number = 11;
+  gridSize: number;
 
   cameraAutoFocus: boolean;
 
@@ -32,6 +33,10 @@ export default class Raytracer {
 
     this.camera = camera;
     this.control = control;
+
+    this.maxSpheres = getGraphicsMode() === GRAPHICS_HIGH ? 100 : 50;
+    this.maxBounces = getGraphicsMode() === GRAPHICS_HIGH ? 50 : 25;
+    this.gridSize = getGraphicsMode() === GRAPHICS_HIGH ? 11 : 7;
 
     const scenes = [SCENE_FINAL, SCENE_SIMPLE];
 

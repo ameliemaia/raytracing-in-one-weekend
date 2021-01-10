@@ -26,7 +26,6 @@ export function profiler(): string {
   switch (gpuTier.tier) {
     case 'GPU_DESKTOP_TIER_3':
     case 'GPU_DESKTOP_TIER_2':
-    case 'GPU_MOBILE_TIER_3':
       return GRAPHICS_HIGH;
     case 'GPU_DESKTOP_TIER_1':
     default:
