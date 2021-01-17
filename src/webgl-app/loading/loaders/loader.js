@@ -14,6 +14,7 @@ class Loader extends EventEmitter {
   static threeFBX: string = 'fbx';
   static threeGLTF: string = 'gltf';
   static threeTexture: string = 'texture';
+  static threeHDRTexture: string = 'hdr-texture';
 }
 
 export default Loader;

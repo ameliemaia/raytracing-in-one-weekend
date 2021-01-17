@@ -1,6 +1,7 @@
 import { GUI } from 'dat.gui';
 import { MathUtils, Mesh, PerspectiveCamera, PlaneBufferGeometry, Scene, ShaderMaterial, Vector3 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import assetManager from '../../../../loading/asset-manager';
 import { getGraphicsMode, GRAPHICS_HIGH } from '../../../../rendering/graphics';
 import { postProcessing } from '../../../../rendering/renderer';
 import { uniforms, vertexShader, fragmentShader } from './raytracer.glsl';
@@ -35,12 +36,15 @@ export default class Raytracer {
     this.control = control;
 
     this.maxSpheres = getGraphicsMode() === GRAPHICS_HIGH ? 100 : 50;
-    this.maxBounces = getGraphicsMode() === GRAPHICS_HIGH ? 50 : 25;
+    this.maxBounces = getGraphicsMode() === GRAPHICS_HIGH ? 25 : 15;
     this.gridSize = getGraphicsMode() === GRAPHICS_HIGH ? 11 : 7;
 
     const scenes = [SCENE_FINAL, SCENE_SIMPLE];
+    const envMaps = ['glass-passage', 'lilienstein'];
 
     this.scene = scenes[0];
+    this.envMap = envMaps[0];
+    this.envMapEnabled = true;
     this.cameraAutoFocus = uniforms.cameraAutoFocus.value === 1;
 
     this.mesh = new Mesh(new PlaneBufferGeometry(2, 2), this.createMaterial());
@@ -49,6 +53,11 @@ export default class Raytracer {
     this.gui.add(this, 'maxBounces', 1, 100, 1).onChange(this.rebuild);
     this.gui.add(this, 'maxSpheres', 1, 500, 1).onChange(this.rebuild);
     this.gui.add(this, 'gridSize', 1, 11).onChange(this.rebuild);
+    this.gui.add(this, 'envMap', envMaps).onChange(this.rebuild);
+    this.gui.add(this, 'envMapEnabled').onChange(() => {
+      this.mesh.material.uniforms.envMapEnabled.value = this.envMapEnabled ? 1 : 0;
+      this.rebuild();
+    });
 
     const guiCamera = this.gui.addFolder('camera');
     guiCamera.open();
@@ -99,7 +108,8 @@ export default class Raytracer {
     world[2] = `Sphere(vec3(-4.0, 1.0, 0.0), 1.0, Material(LAMBERT, vec3(0.4, 0.2, 0.1), 0.0))`;
     world[3] = `Sphere(vec3(4.0, 1.0, 0.0), 1.0, Material(METAL, vec3(0.7, 0.6, 0.5), 0.0))`;
 
-    const offset = new Vector3(4, 0.2, 0);
+    const offsets = [new Vector3(0, 0.2, 0), new Vector3(4, 0.2, 0), new Vector3(-4, 0.2, 0)];
+
     const total = size - world.length;
     const grid = Math.floor(Math.sqrt(total));
     let n = world.length;
@@ -114,7 +124,16 @@ export default class Raytracer {
       center.x = MathUtils.lerp(-this.gridSize, this.gridSize, row) + MathUtils.randFloat(0, 0.9);
       center.z = MathUtils.lerp(-this.gridSize, this.gridSize, col) + MathUtils.randFloat(0, 0.9);
 
-      if (center.distanceTo(offset) > 0.9) {
+      // Avoid adding spheres near / inside the 3 large spheres
+      let addSphere = true;
+      for (let j = 0; j < offsets.length; j++) {
+        if (center.distanceTo(offsets[j]) < 1.1) {
+          addSphere = false;
+          break;
+        }
+      }
+
+      if (addSphere) {
         if (chooseMat < 0.8) {
           world[n++] = `Sphere(vec3(${center.x},${center.y},${center.z}), 0.2, Material(LAMBERT, vec3(${Math.random() *
             Math.random()}, ${Math.random() * Math.random()}, ${Math.random() * Math.random()}), 0.0))`;
@@ -139,6 +158,7 @@ export default class Raytracer {
 
   createMaterial = () => {
     const data = this.getSceneShader();
+    uniforms.envMap.value = assetManager.get('main', this.envMap);
     return new ShaderMaterial({
       uniforms,
       vertexShader,
@@ -200,7 +220,6 @@ export default class Raytracer {
   resize(width: number, height: number, camera: PerspectiveCamera) {
     this.mesh.material.uniforms.resolution.value.x = width;
     this.mesh.material.uniforms.resolution.value.y = height;
-    this.mesh.material.uniforms.cameraAspect.value = camera.aspect;
   }
 
   update(delta: number, camera: PerspectiveCamera, control: OrbitControls) {

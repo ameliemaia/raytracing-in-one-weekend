@@ -10,12 +10,13 @@ export const uniforms = {
   fov: { value: 20 },
   seed: { value: new Vector4(Math.random(), Math.random(), Math.random(), Math.random()) },
   time: { value: 0 },
-  cameraAspect: { value: 1 },
+  envMap: { value: null },
   cameraAperture: { value: 0.1 },
   cameraFocusDistance: { value: 10 },
   cameraAutoFocus: { value: 0 },
   cameraPosition: { value: new Vector3() },
-  cameraTarget: { value: new Vector3() }
+  cameraTarget: { value: new Vector3() },
+  envMapEnabled: { value: 1 }
 };
 
 export const vertexShader = `
@@ -33,10 +34,11 @@ export const fragmentShader = (worldSize: number, maxBounces: number = 50, scene
     uniform vec4 seed;
     uniform float fov;
     uniform vec3 cameraTarget;
-    uniform float cameraAspect;
     uniform float cameraAperture;
     uniform float cameraFocusDistance;
     uniform float cameraAutoFocus;
+    uniform sampler2D envMap;
+    uniform bool envMapEnabled;
     varying vec2 vUv;
 
     #define MAX_FLOAT 1e5
