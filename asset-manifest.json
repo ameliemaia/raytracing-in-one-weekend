@@ -1,22 +1,22 @@
 {
   "files": {
     "main.css": "/raytracing-in-one-weekend/static/css/main.53e688f1.chunk.css",
-    "main.js": "/raytracing-in-one-weekend/static/js/main.0050ee06.chunk.js",
-    "main.js.map": "/raytracing-in-one-weekend/static/js/main.0050ee06.chunk.js.map",
+    "main.js": "/raytracing-in-one-weekend/static/js/main.fdda02f2.chunk.js",
+    "main.js.map": "/raytracing-in-one-weekend/static/js/main.fdda02f2.chunk.js.map",
     "runtime-main.js": "/raytracing-in-one-weekend/static/js/runtime-main.ba772929.js",
     "runtime-main.js.map": "/raytracing-in-one-weekend/static/js/runtime-main.ba772929.js.map",
-    "static/js/2.8c49ad93.chunk.js": "/raytracing-in-one-weekend/static/js/2.8c49ad93.chunk.js",
-    "static/js/2.8c49ad93.chunk.js.map": "/raytracing-in-one-weekend/static/js/2.8c49ad93.chunk.js.map",
+    "static/js/2.30d2a7ab.chunk.js": "/raytracing-in-one-weekend/static/js/2.30d2a7ab.chunk.js",
+    "static/js/2.30d2a7ab.chunk.js.map": "/raytracing-in-one-weekend/static/js/2.30d2a7ab.chunk.js.map",
     "index.html": "/raytracing-in-one-weekend/index.html",
-    "precache-manifest.dafc4af3e645c83110fa27c40446246a.js": "/raytracing-in-one-weekend/precache-manifest.dafc4af3e645c83110fa27c40446246a.js",
+    "precache-manifest.6e037256b28638d80b05c16c7f1de597.js": "/raytracing-in-one-weekend/precache-manifest.6e037256b28638d80b05c16c7f1de597.js",
     "service-worker.js": "/raytracing-in-one-weekend/service-worker.js",
     "static/css/main.53e688f1.chunk.css.map": "/raytracing-in-one-weekend/static/css/main.53e688f1.chunk.css.map",
-    "static/js/2.8c49ad93.chunk.js.LICENSE.txt": "/raytracing-in-one-weekend/static/js/2.8c49ad93.chunk.js.LICENSE.txt"
+    "static/js/2.30d2a7ab.chunk.js.LICENSE.txt": "/raytracing-in-one-weekend/static/js/2.30d2a7ab.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.ba772929.js",
-    "static/js/2.8c49ad93.chunk.js",
+    "static/js/2.30d2a7ab.chunk.js",
     "static/css/main.53e688f1.chunk.css",
-    "static/js/main.0050ee06.chunk.js"
+    "static/js/main.fdda02f2.chunk.js"
   ]
 }
