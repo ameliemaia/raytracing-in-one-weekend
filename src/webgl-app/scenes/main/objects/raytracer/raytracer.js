@@ -1,5 +1,14 @@
 import { GUI } from 'dat.gui';
-import { MathUtils, Mesh, PerspectiveCamera, PlaneBufferGeometry, Scene, ShaderMaterial, Vector3 } from 'three';
+import {
+  MathUtils,
+  Mesh,
+  PerspectiveCamera,
+  PlaneBufferGeometry,
+  Scene,
+  ShaderMaterial,
+  Texture,
+  Vector3
+} from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import assetManager from '../../../../loading/asset-manager';
 import { getGraphicsMode, GRAPHICS_HIGH } from '../../../../rendering/graphics';
@@ -27,6 +36,10 @@ export default class Raytracer {
   gridSize: number;
 
   cameraAutoFocus: boolean;
+
+  envMap: string;
+
+  envMapEnabled: boolean;
 
   constructor(gui: GUI, camera: PerspectiveCamera, control: OrbitControls) {
     this.gui = gui.addFolder('raytracer');
@@ -158,7 +171,10 @@ export default class Raytracer {
 
   createMaterial = () => {
     const data = this.getSceneShader();
-    uniforms.envMap.value = assetManager.get('main', this.envMap);
+    const envMap = assetManager.get('main', this.envMap);
+    if (envMap instanceof Texture) {
+      uniforms.envMap.value = envMap;
+    }
     return new ShaderMaterial({
       uniforms,
       vertexShader,

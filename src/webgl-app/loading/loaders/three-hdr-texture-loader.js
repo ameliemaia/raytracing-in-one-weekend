@@ -1,4 +1,4 @@
-import { FloatType } from 'three';
+import { FloatType, Texture } from 'three';
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader';
 import Loader from './loader';
 import Asset from '../asset';
