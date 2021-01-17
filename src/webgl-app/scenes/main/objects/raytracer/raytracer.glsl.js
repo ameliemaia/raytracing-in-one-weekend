@@ -16,7 +16,7 @@ export const uniforms = {
   cameraAutoFocus: { value: 0 },
   cameraPosition: { value: new Vector3() },
   cameraTarget: { value: new Vector3() },
-  envMapEnabled: { value: 1 }
+  envMapEnabled: { value: 0 }
 };
 
 export const vertexShader = `

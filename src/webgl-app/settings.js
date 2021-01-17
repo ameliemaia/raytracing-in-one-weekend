@@ -1,3 +1,4 @@
+import detect from '@jam3/detect';
 import { getQueryFromParams } from './utils/query-params';
 
 const settings = {};
@@ -33,5 +34,7 @@ settings.viewportPreviewScale = 0.25;
 settings.renderBufferFullscreen = getQueryFromParams('hd') === 'true' || false;
 
 settings.postProcessing = true;
+
+settings.hdrEnabled = detect.device.isDesktop;
 
 export default settings;

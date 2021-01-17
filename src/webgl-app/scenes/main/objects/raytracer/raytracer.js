@@ -13,6 +13,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import assetManager from '../../../../loading/asset-manager';
 import { getGraphicsMode, GRAPHICS_HIGH } from '../../../../rendering/graphics';
 import { postProcessing } from '../../../../rendering/renderer';
+import settings from '../../../../settings';
 import { uniforms, vertexShader, fragmentShader } from './raytracer.glsl';
 
 const SCENE_FINAL = 'final';
@@ -57,20 +58,24 @@ export default class Raytracer {
 
     this.scene = scenes[0];
     this.envMap = envMaps[0];
-    this.envMapEnabled = true;
+    this.envMapEnabled = settings.hdrEnabled;
     this.cameraAutoFocus = uniforms.cameraAutoFocus.value === 1;
 
     this.mesh = new Mesh(new PlaneBufferGeometry(2, 2), this.createMaterial());
+    this.setHDR();
 
     this.gui.add(this, 'scene', scenes).onChange(this.rebuild);
     this.gui.add(this, 'maxBounces', 1, 100, 1).onChange(this.rebuild);
     this.gui.add(this, 'maxSpheres', 1, 500, 1).onChange(this.rebuild);
     this.gui.add(this, 'gridSize', 1, 11).onChange(this.rebuild);
-    this.gui.add(this, 'envMap', envMaps).onChange(this.rebuild);
-    this.gui.add(this, 'envMapEnabled').onChange(() => {
-      this.mesh.material.uniforms.envMapEnabled.value = this.envMapEnabled ? 1 : 0;
-      this.rebuild();
-    });
+
+    if (settings.hdrEnabled) {
+      this.gui.add(this, 'envMap', envMaps).onChange(this.rebuild);
+      this.gui.add(this, 'envMapEnabled').onChange(() => {
+        this.setHDR();
+        this.rebuild();
+      });
+    }
 
     const guiCamera = this.gui.addFolder('camera');
     guiCamera.open();
@@ -171,10 +176,13 @@ export default class Raytracer {
 
   createMaterial = () => {
     const data = this.getSceneShader();
-    const envMap = assetManager.get('main', this.envMap);
-    if (envMap instanceof Texture) {
-      uniforms.envMap.value = envMap;
+    if (settings.hdrEnabled) {
+      const envMap = assetManager.get('main', this.envMap);
+      if (envMap instanceof Texture) {
+        uniforms.envMap.value = envMap;
+      }
     }
+
     return new ShaderMaterial({
       uniforms,
       vertexShader,
@@ -211,6 +219,10 @@ export default class Raytracer {
 
     this.onChange();
   };
+
+  setHDR() {
+    this.mesh.material.uniforms.envMapEnabled.value = this.envMapEnabled ? 1 : 0;
+  }
 
   setAperture(value: number) {
     this.mesh.material.uniforms.cameraAperture.value = value;
