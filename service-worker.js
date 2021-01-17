@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/raytracing-in-one-weekend/precache-manifest.571c63904d3c84b41cdb8c6c99a58bcf.js"
+  "/raytracing-in-one-weekend/precache-manifest.dafc4af3e645c83110fa27c40446246a.js"
 );
 
 self.addEventListener('message', (event) => {
